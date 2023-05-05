@@ -1,4 +1,5 @@
 #include "Screen.h"
+#include "Config.h"
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -46,6 +47,7 @@ Screen::Screen()
 #endif
     this->max_width = std::min(80, this->screen_column);
     this->align = "left";
+    this->mode = "menu";
 }
 
 void Screen::fill(char texture)
@@ -104,7 +106,6 @@ std::string Screen::get_key()
 
         return std::string(1, (char)recv_key);
     }
-    return "";
 
 #else
     struct termios oldSettings, newSettings;
@@ -172,9 +173,9 @@ std::string Screen::get_key()
             return "right";
         }
     }
-    return "";
 
 #endif
+    return "";
 }
 
 int Screen::get_up_or_down()
@@ -278,27 +279,42 @@ void Screen::add_base(std::string newline, bool center = false)
     }
 }
 
-void Screen::render()
-{
+void Screen::render_menu(){
     // generate base window, and make the window in the center
 
     std::vector<std::string> base_output;
 
-    this->add_base("# " + this->title, true);
+    bool render_center = this->align == "center";
+
+    this->add_base("# " + this->title, render_center);
     this->add_base("");
     this->add_base(this->description);
     this->add_base("");
-    this->add_base("[ " + this->question + " ]", true);
+    this->add_base("[ " + this->question + " ]", render_center);
     this->add_base("");
     for (int i = 0; i < (int)this->options.size(); i++)
     {
-        if (i == this->mark_pos)
+        if (render_center)
         {
-            this->add_base("> " + this->options[i] + " <", true);
+            if (i == this->mark_pos)
+            {
+                this->add_base("> " + this->options[i] + " <", true);
+            }
+            else
+            {
+                this->add_base(this->options[i], true);
+            }
         }
         else
         {
-            this->add_base(this->options[i], true);
+            if (i == this->mark_pos)
+            {
+                this->add_base("> " + this->options[i]);
+            }
+            else
+            {
+                this->add_base("  " + this->options[i]);
+            }
         }
     }
 
@@ -323,6 +339,28 @@ void Screen::render()
     std::cout << content;
 }
 
-// int wait_menu(){
-//
-// }
+void Screen::render()
+{
+    switch (this->mode)
+    {
+    case "menu":
+        this->render_menu();
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void Screen::set_align(std::string new_align_mode)
+{
+    std::vector<std::string> align_mode_list = Config::align_mode_list;
+    if (std::count(align_mode_list.begin(), align_mode_list.end(), new_align_mode))
+    {
+        this->align = new_align_mode;
+    }
+    else
+    {
+        std::cerr << "\"" << new_align_mode << "\" is not a valid align mode.\n";
+    }
+}

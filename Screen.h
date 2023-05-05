@@ -4,7 +4,7 @@ class Screen
 {
 private:
     /* data */
-    int mode;  // 0 for menu, 1 for map
+    std::string mode;
     Map map;
     std::string title, description, question;
     std::vector<std::string> options;
@@ -31,6 +31,8 @@ private:
     
     void clean_base();
     void add_base(std::string, bool);
+    
+    void render_menu();
 public:
     Screen();
     
@@ -38,6 +40,7 @@ public:
     void init_menu(std::string, std::string, std::string);
     void add_option(std::string);
     void render();
+
     std::string get_key();
 
     // int wait_menu();
