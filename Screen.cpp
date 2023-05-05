@@ -90,7 +90,7 @@ std::string Screen::get_key()
         }
     }
     else
-    {   
+    {
         switch (recv_key)
         {
         case 13:
@@ -98,7 +98,7 @@ std::string Screen::get_key()
         case 32:
             return "space";
         }
-        
+
         return std::string(1, (char)recv_key);
     }
     return "";
@@ -199,8 +199,25 @@ void Screen::test()
     {
         std::string recv_string = this->get_key();
         std::cout << "get_key: " << recv_string << std::endl;
-        std::cout << (recv_string == " ") << std::endl;
-        std::cout << (recv_string == "\n") << std::endl;
     }
+    for (int i = 0; i < 10; i++)
+    {
+        std::string recv_string = this->get_key();
+        for (int j = 0; j < (int)recv_string.length(); j++)
+        {
+            this->fill(recv_string[j]);
+            this->wait(0.1);
+        }
+        
+    }
+    
+}
 
+void Screen::wait(float sec)
+{
+#ifdef _WIN32
+    Sleep((int)(1000.0 * sec));
+#else
+    usleep((int)(1000000.0 * sec)); 
+#endif
 }

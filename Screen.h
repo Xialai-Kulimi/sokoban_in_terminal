@@ -17,6 +17,7 @@ private:
     void clear();
     void fill(char);
     std::string get_key();
+    void wait(float);
     
 public:
     Screen();
