@@ -6,15 +6,15 @@ CC = g++
   #  -Wall  - this flag is used to turn on most compiler warningsCFLAGS  = -g -Wall
 CFLAGS =  -Wall
   # The build target 
-LIBRARY = Block.cpp
+LIBRARY = Block.cpp Map.cpp
 TARGET = main.cpp
 TEST_TARGET = test.cpp
   
 run: $(TARGET)
-	$(CC) $(TARGET) $(CFLAGS) -o a.out
+	$(CC) $(TARGET) $(LIBRARY) $(CFLAGS) -o a.out
 	./a.out
 	rm a.out
 test: $(TEST_TARGET)
-	$(CC) $(TEST_TARGET) $(CFLAGS) -o test.out
+	$(CC) $(TEST_TARGET) $(LIBRARY) $(CFLAGS) -o test.out
 	./test.out
 	rm test.out
