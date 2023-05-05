@@ -90,7 +90,15 @@ std::string Screen::get_key()
         }
     }
     else
-    {
+    {   
+        switch (recv_key)
+        {
+        case 13:
+            return "enter";
+        case 32:
+            return "space";
+        }
+        
         return std::string(1, (char)recv_key);
     }
     return "";
@@ -138,6 +146,13 @@ std::string Screen::get_key()
 
     if (recv_char[1] == 0)
     {
+        switch (recv_char[0])
+        {
+        case ' ':
+            return "space";
+        case '\n':
+            return "enter";
+        }
         return std::string(recv_char);
     }
     else if (recv_char[0] == 27 && recv_char[1] == 91)
