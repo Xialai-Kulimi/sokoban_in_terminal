@@ -1,12 +1,6 @@
 # sokoban_in_terminal
 Sokoban in terminal, NTPU Object Oriented Programming coursework
 
-## Todo
-1. read map
-2. render map
-3. control player
-4. game physic
-
 ## Styles
 ```
 1. dots 
