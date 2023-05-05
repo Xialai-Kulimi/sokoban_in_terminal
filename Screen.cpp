@@ -88,7 +88,7 @@ std::string Screen::get_key()
         }
     }
     else {
-        return std::string(1, (char)recv_key)
+        return std::string(1, (char)recv_key);
     }
     return "";
 
