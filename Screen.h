@@ -11,9 +11,13 @@ private:
     int screen_row, screen_column;
 
     int get_up_or_down();
-    int get_arrow();
+    std::vector<int> get_arrow();  // {1, 0} for right, {0, 1} for up
+
+
     void clear();
 public:
     Screen();
     void fill(char);
+    std::string get_key();
+
 };
