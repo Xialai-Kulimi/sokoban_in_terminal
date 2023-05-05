@@ -6,7 +6,7 @@ CC = g++
   #  -Wall  - this flag is used to turn on most compiler warningsCFLAGS  = -g -Wall
 CFLAGS =  -Wall
   # The build target 
-LIBRARY = Block.cpp Map.cpp
+LIBRARY = Block.cpp Map.cpp Screen.cpp
 TARGET = main.cpp
 TEST_TARGET = test.cpp
   
