@@ -6,6 +6,12 @@
 
 using namespace std;
 
+Map::Map()
+{
+    this->row = 0;
+    this->column = 0;
+}
+
 Map::Map(string filename)
 {
     string file_path = "maps/" + filename + ".txt";

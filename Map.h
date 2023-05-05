@@ -14,8 +14,8 @@ private:
     void generate_map();
 
 public:
+    Map();
     Map(string); // init with map filename
-    
+
     string to_string();
 };
-
