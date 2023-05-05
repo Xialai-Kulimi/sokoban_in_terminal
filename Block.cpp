@@ -1,19 +1,11 @@
 #include "Block.h"
-#include "config.cpp"
+#include "Config.h"
 #include <iostream>
 
 Block::Block(std::string block_type)
 {
-    bool valid = false;
-    for (int i = 0; i < (int)config.block_type_list.size(); i++)
-    {
-        if (block_type == config.block_type_list[i])
-        {
-            valid = true;
-            break;
-        }
-    }
-    if (valid)
+    std::vector<std::string> block_type_list = Config::block_type_list;
+    if (std::count(block_type_list.begin(), block_type_list.end(), block_type))
     {
         this->type = block_type;
     }
