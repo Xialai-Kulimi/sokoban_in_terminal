@@ -13,11 +13,6 @@ int main(){
     std::cout << "Air Block: "<<  b.to_string() << "\n";
     std::cout << "mission3: " << map.to_string() << std::endl;
     Screen screen;
-    screen.fill('X');
-    for (int i = 0; i < 10; i++)
-    {
-        /* code */
-    std::cout << "get_key: " << screen.get_key() << std::endl;
-    }
+    screen.test();
     
 }

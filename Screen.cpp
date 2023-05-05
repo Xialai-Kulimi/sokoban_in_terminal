@@ -47,17 +47,19 @@ Screen::Screen()
 
 void Screen::fill(char texture)
 {
+    std::string content = "";
     for (int i = 0; i < this->screen_row; i++)
     {
         for (int j = 0; j < this->screen_column; j++)
         {
-            std::cout << texture;
+            content = content + texture;
         }
         if (i != this->screen_row - 1)
         {
-            std::cout << '\n';
+            content = content + '\n';
         }
     }
+    std::cout << content;
 }
 
 std::string Screen::get_key()
@@ -87,7 +89,8 @@ std::string Screen::get_key()
             return "right";
         }
     }
-    else {
+    else
+    {
         return std::string(1, (char)recv_key);
     }
     return "";
@@ -158,8 +161,31 @@ std::string Screen::get_key()
 
 int Screen::get_up_or_down()
 {
+    std::string recv_key = this->get_key();
+    if (recv_key == "w" || recv_key == "up")
+    {
+        return 1;
+    }
+    else if (recv_key == "s" || recv_key == "down")
+    {
+        return -1;
+    }
+    return 0;
 }
 
 std::vector<int> Screen::get_arrow()
 {
+}
+
+void Screen::test()
+{
+    this->fill('X');
+    for (int i = 0; i < 10; i++)
+    {
+        std::string recv_string = this->get_key();
+        std::cout << "get_key: " << recv_string << std::endl;
+        std::cout << (recv_string == " ") << std::endl;
+        std::cout << (recv_string == "\n") << std::endl;
+    }
+
 }

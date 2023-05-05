@@ -15,9 +15,13 @@ private:
 
 
     void clear();
-public:
-    Screen();
     void fill(char);
     std::string get_key();
+    
+public:
+    Screen();
+    
+    void test();
+    
 
 };
