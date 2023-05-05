@@ -1,6 +1,7 @@
 #include "Block.h"
 #include "Config.h"
 #include <iostream>
+#include <algorithm>
 
 Block::Block(std::string block_type)
 {

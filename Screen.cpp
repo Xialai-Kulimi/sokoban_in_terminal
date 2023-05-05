@@ -4,6 +4,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cmath>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <windows.h>
