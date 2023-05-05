@@ -7,6 +7,7 @@ private:
     int mode;  // 0 for menu, 1 for map
     Map map;
     std::string title, description, question;
+    std::vector<std::string> options;
 
     int screen_row, screen_column;
 
@@ -16,13 +17,28 @@ private:
 
     void clear();
     void fill(char);
-    std::string get_key();
     void wait(float);
+
+    int mark_pos;
+
+    int max_width;
+    
+    std::string to_center(std::string);
+
+    std::string align;
     
 public:
     Screen();
     
     void test();
+    void init_menu(std::string, std::string, std::string);
+    void add_option(std::string);
+    void render();
+    std::string get_key();
+
+    // int wait_menu();
+    void set_align(std::string);
+
     
 
 };

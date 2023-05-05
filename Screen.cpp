@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <cmath>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -43,6 +44,7 @@ Screen::Screen()
     this->screen_row = w.ws_row;
     this->screen_column = w.ws_col;
 #endif
+    this->max_width = std::min(80, this->screen_column);
 }
 
 void Screen::fill(char texture)
@@ -208,9 +210,7 @@ void Screen::test()
             this->fill(recv_string[j]);
             this->wait(0.1);
         }
-        
     }
-    
 }
 
 void Screen::wait(float sec)
@@ -218,6 +218,99 @@ void Screen::wait(float sec)
 #ifdef _WIN32
     Sleep((int)(1000.0 * sec));
 #else
-    usleep((int)(1000000.0 * sec)); 
+    usleep((int)(1000000.0 * sec));
 #endif
 }
+
+void Screen::init_menu(
+    std::string new_title,
+    std::string new_description,
+    std::string new_question)
+{
+    this->title = new_title;
+    this->description = new_description;
+    this->question = new_question;
+    this->options.clear();
+    this->mark_pos = 0;
+}
+
+void Screen::add_option(std::string new_option)
+{
+    this->options.push_back(new_option);
+}
+
+std::string Screen::to_center(std::string input_string)
+{
+    int string_length = input_string.length();
+    int margin_x = (this->max_width - string_length) / 2;
+    return std::string(margin_x, ' ') + input_string + std::string(margin_x, ' ');
+}
+
+void Screen::render()
+{
+    // generate base window, and make the window in the center
+
+    std::vector<std::string> base_output;
+    base_output.push_back(this->to_center("# " + this->title));
+    base_output.push_back("");
+    base_output.push_back(this->description);
+    base_output.push_back("");
+    base_output.push_back(this->to_center("[ " + this->question + " ]"));
+    base_output.push_back("");
+    for (int i = 0; i < (int)this->options.size(); i++)
+    {
+        if (i == this->mark_pos)
+        {
+            base_output.push_back(this->to_center("> " + this->options[i] + " <"));
+        }
+        else
+        {
+            base_output.push_back(this->to_center(this->options[i]));
+        }
+    }
+
+    std::vector<std::string> base_content;
+    for (int i = 0; i < (int)base_output.size(); i++)
+    {
+        int char_count = 0;
+        std::string current_row;
+        for (int j = 0; j < base_output[i].length(); j++)
+        {
+            if (char_count > max_width)
+            {
+                base_content.push_back(current_row);
+                current_row = "";
+                char_count = 0;
+            }
+
+            current_row = current_row + base_output[i][j];
+            char_count++;
+        }
+
+        base_content.push_back(current_row);
+        current_row = "";
+    }
+    int margin_y = (this->screen_row - (int)base_content.size()) / 2 + 1;
+    int margin_x = (this->screen_column - max_width) / 2 - 1;
+    std::string content = "";
+
+    for (int i = 0; i < margin_y; i++)
+    {
+        content = content + std::string(this->screen_column, ' ') + "\n";
+    }
+    for (int i = 0; i < (int)base_content.size(); i++)
+    {
+        content = content + std::string(margin_x, ' ') + base_content[i] + std::string(margin_x, ' ') + "\n";
+    }
+
+    for (int i = 0; i < margin_y - 1; i++)
+    {
+        content = content + std::string(this->screen_column, ' ') + "\n";
+    }
+    content = content + std::string(this->screen_column, ' ');
+    std::cout << content;
+}
+
+// int wait_menu(){
+//
+// }
