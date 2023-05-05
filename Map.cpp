@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
+
 
 Map::Map()
 {
@@ -12,16 +12,16 @@ Map::Map()
     this->column = 0;
 }
 
-Map::Map(string filename)
+Map::Map(std::string filename)
 {
-    string file_path = "maps/" + filename + ".txt";
-    ifstream fin(file_path);
+    std::string file_path = "maps/" + filename + ".txt";
+    std::ifstream fin(file_path);
     if (fin)
     {
         fin >> this->row >> this->column;
         for (int i = 0; i < this->row; i++)
         {
-            string current_row;
+            std::string current_row;
             fin >> current_row;
             this->raw_map.push_back(current_row);
         }
@@ -29,7 +29,7 @@ Map::Map(string filename)
     }
     else
     {
-        cerr << file_path << " is not found.\n";
+        std::cerr << file_path << " is not found.\n";
     }
 }
 
@@ -38,7 +38,7 @@ void Map::generate_map()
     this->map.clear();
     for (int y = 0; y < this->row; y++)
     {
-        vector<Block> current_row;
+        std::vector<Block> current_row;
         int raw_length = (int)this->raw_map[y].length();
         for (int x = 0; x < raw_length; x++)
         {
@@ -62,12 +62,12 @@ void Map::generate_map()
                 break;
 
             default:
-                cerr << "Unknown raw block type: " << raw_block << endl;
+                std::cerr << "Unknown raw block type: " << raw_block << std::endl;
                 break;
             }
         }
 
-        for (int i = 0; i < min(this->column - raw_length, 0); i++)
+        for (int i = 0; i < std::min(this->column - raw_length, 0); i++)
         {
             current_row.push_back(Block("air"));
         }
@@ -77,9 +77,9 @@ void Map::generate_map()
 }
 
 
-string Map::to_string()
+std::string Map::to_string()
 {
-    string map_string = "Map(\n";
+    std::string map_string = "Map(\n";
     for (int y = 0; y < this->row; y++)
     {
         map_string = map_string + "\t[ ";

@@ -1,16 +1,15 @@
 #pragma once
 #include <string>
 
-using namespace std;
 
 class Block
 {
 private:
-    string type;
+    std::string type;
 
 public:
-    string get_type();
-    Block(string);
-    string to_string();
+    std::string get_type();
+    Block(std::string);
+    std::string to_string();
 };
 

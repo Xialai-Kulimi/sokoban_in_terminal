@@ -1,14 +1,12 @@
 #include <vector>
 #include <string>
 
-using namespace std;
-
 class Config
 {
 private:
 
 public:
-    vector<string> block_type_list;
+    std::vector<std::string> block_type_list;
     Config();
 };
 

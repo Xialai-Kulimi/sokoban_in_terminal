@@ -6,7 +6,7 @@ private:
     /* data */
     int mode;  // 0 for menu, 1 for map
     Map map;
-    string title, description, question;
+    std::string title, description, question;
 
     int screen_row, screen_column;
 

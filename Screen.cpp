@@ -11,8 +11,6 @@
 
 #endif
 
-using namespace std;
-
 void Screen::clear()
 {
 #ifdef _WIN32
@@ -40,17 +38,17 @@ Screen::Screen()
 #endif
 }
 
-void Screen::fill(char texture){
+void Screen::fill(char texture)
+{
     for (int i = 0; i < this->screen_row; i++)
     {
         for (int j = 0; j < this->screen_column; j++)
         {
-            cout << texture;
+            std::cout << texture;
         }
-        if (i != this->screen_row-1)
+        if (i != this->screen_row - 1)
         {
-            cout << '\n';
+            std::cout << '\n';
         }
     }
-    
 }
