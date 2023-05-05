@@ -341,15 +341,11 @@ void Screen::render_menu(){
 
 void Screen::render()
 {
-    switch (this->mode)
+    if (this->mode == "menu")
     {
-    case "menu":
         this->render_menu();
-        break;
-    
-    default:
-        break;
     }
+    
 }
 
 void Screen::set_align(std::string new_align_mode)
