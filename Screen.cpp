@@ -282,8 +282,7 @@ void Screen::add_base(std::string newline, bool center = false)
 
 void Screen::render_menu(){
     // generate base window, and make the window in the center
-
-    std::vector<std::string> base_output;
+    this->base_output.clear();
 
     bool render_center = this->align == "center";
 

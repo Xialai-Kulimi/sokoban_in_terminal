@@ -12,6 +12,8 @@ int main(){
     screen.add_option("not very good option");
     screen.render();
     screen.get_key();
+    
     screen.set_align("center");
+    screen.render();
     screen.get_key();
 }

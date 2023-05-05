@@ -15,7 +15,7 @@ private:
     std::vector<int> get_arrow();  // {1, 0} for right, {0, 1} for up
 
 
-    void clear();
+    
     void fill(char);
     void wait(float);
 
@@ -31,7 +31,7 @@ private:
     
     void clean_base();
     void add_base(std::string, bool);
-    
+
     void render_menu();
 public:
     Screen();
@@ -40,6 +40,7 @@ public:
     void init_menu(std::string, std::string, std::string);
     void add_option(std::string);
     void render();
+    void clear();
 
     std::string get_key();
 
