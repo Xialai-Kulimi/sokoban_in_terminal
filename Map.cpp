@@ -35,7 +35,7 @@ Map::Map(string filename)
 
 void Map::generate_map()
 {
-    this->map.empty();
+    this->map.clear();
     for (int y = 0; y < this->row; y++)
     {
         vector<Block> current_row;
