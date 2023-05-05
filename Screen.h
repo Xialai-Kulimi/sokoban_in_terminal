@@ -26,7 +26,11 @@ private:
     std::string to_center(std::string);
 
     std::string align;
+
+    std::vector<std::string> base_output;
     
+    void clean_base();
+    void add_base(std::string, bool);
 public:
     Screen();
     

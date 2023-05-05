@@ -45,6 +45,7 @@ Screen::Screen()
     this->screen_column = w.ws_col;
 #endif
     this->max_width = std::min(80, this->screen_column);
+    this->align = "left";
 }
 
 void Screen::fill(char texture)
@@ -246,61 +247,72 @@ std::string Screen::to_center(std::string input_string)
     return std::string(margin_x, ' ') + input_string + std::string(margin_x, ' ');
 }
 
+void Screen::clean_base()
+{
+    this->base_output.clear();
+}
+void Screen::add_base(std::string newline, bool center = false)
+{
+    if (newline == "")
+    {
+        this->base_output.push_back("");
+        return;
+    }
+
+    if (center && newline.length() > this->max_width)
+    {
+        std::cerr << "Error, you can't center a string which is longer then max_width.\n";
+        center = false;
+    }
+
+    if (center)
+    {
+        this->base_output.push_back(this->to_center(newline));
+    }
+    else
+    {
+        for (int i = 0; i < std::ceil(((float)newline.length()) / ((float)this->max_width)); i++)
+        {
+            this->base_output.push_back(newline.substr(i * this->max_width, this->max_width));
+        }
+    }
+}
+
 void Screen::render()
 {
     // generate base window, and make the window in the center
 
     std::vector<std::string> base_output;
-    base_output.push_back(this->to_center("# " + this->title));
-    base_output.push_back("");
-    base_output.push_back(this->description);
-    base_output.push_back("");
-    base_output.push_back(this->to_center("[ " + this->question + " ]"));
-    base_output.push_back("");
+
+    this->add_base("# " + this->title, true);
+    this->add_base("");
+    this->add_base(this->description);
+    this->add_base("");
+    this->add_base("[ " + this->question + " ]", true);
+    this->add_base("");
     for (int i = 0; i < (int)this->options.size(); i++)
     {
         if (i == this->mark_pos)
         {
-            base_output.push_back(this->to_center("> " + this->options[i] + " <"));
+            this->add_base("> " + this->options[i] + " <", true);
         }
         else
         {
-            base_output.push_back(this->to_center(this->options[i]));
+            this->add_base(this->options[i], true);
         }
     }
 
-    std::vector<std::string> base_content;
-    for (int i = 0; i < (int)base_output.size(); i++)
-    {
-        int char_count = 0;
-        std::string current_row;
-        for (int j = 0; j < base_output[i].length(); j++)
-        {
-            if (char_count > max_width)
-            {
-                base_content.push_back(current_row);
-                current_row = "";
-                char_count = 0;
-            }
-
-            current_row = current_row + base_output[i][j];
-            char_count++;
-        }
-
-        base_content.push_back(current_row);
-        current_row = "";
-    }
-    int margin_y = (this->screen_row - (int)base_content.size()) / 2 + 1;
-    int margin_x = (this->screen_column - max_width) / 2 - 1;
+    int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 + 1, 0);
+    int margin_x = std::max((this->screen_column - max_width) / 2 - 1, 0);
     std::string content = "";
 
     for (int i = 0; i < margin_y; i++)
     {
         content = content + std::string(this->screen_column, ' ') + "\n";
     }
-    for (int i = 0; i < (int)base_content.size(); i++)
+    for (int i = 0; i < (int)this->base_output.size(); i++)
     {
-        content = content + std::string(margin_x, ' ') + base_content[i] + std::string(margin_x, ' ') + "\n";
+        content = content + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ') + "\n";
     }
 
     for (int i = 0; i < margin_y - 1; i++)

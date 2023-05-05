@@ -14,5 +14,7 @@ int main(){
     std::cout << "mission3: " << map.to_string() << std::endl;
     Screen screen;
     screen.test();
-    
+    // std::string test_string = "123";
+    // std::cout << test_string.substr(1, 2) << "\n";
+    // std::cout << test_string.substr(1, 4) << "\n";    
 }
