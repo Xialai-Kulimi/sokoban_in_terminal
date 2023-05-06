@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <cmath>
 #include <algorithm>
+#include <fstream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -49,6 +50,7 @@ Screen::Screen()
     this->max_width = std::min(81, this->screen_column / 3 * 3);
     this->align = "left";
     this->mode = "menu";
+    this->load_block_texture();
 }
 
 void Screen::fill(char texture)
@@ -235,10 +237,6 @@ std::string Screen::to_center(std::string input_string)
     return std::string(margin_x, ' ') + input_string + std::string(margin_x, ' ');
 }
 
-void Screen::clean_base()
-{
-    this->base_output.clear();
-}
 
 void Screen::add_base(std::string newline, bool center = false)
 {
@@ -307,9 +305,13 @@ void Screen::render_menu()
         }
     }
 
+    this->print_base();
+}
+
+void Screen::print_base(){
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 + 1, 0);
-    int margin_x = std::max((this->screen_column - max_width) / 2 , 0);
-    printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
+    int margin_x = std::max((this->screen_column - this->max_width) / 2 , 0);
+    // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
 
     for (int i = 0; i < margin_y; i++)
@@ -330,9 +332,41 @@ void Screen::render_menu()
     std::cout << content;
 }
 
+void Screen::init_map(Map map){
+    this->map = map;
+    this->set_mode("map");
+    this->map_row = map.get_row();
+    this->map_column = map.get_column();
+    this->camera_x = 0;
+    this->camera_y = 0;
+    this->max_block_column = this->max_width / 3;
+    this->max_block_row = this->max_block_column;
+
+}
+void Screen::add_blockmap_to_base(){
+    int print_row = std::min(this->map.get_row(), this->max_block_row);
+    int print_column = std::min(this->map.get_column(), this->max_block_column);
+    
+    for (int i = 0; i < print_row; i++)
+    {
+        std::string current_line = "";
+        for (int j = 0; j < print_column; j++)
+        {
+            current_line = current_line + this->block_texture_map[this->map.get(i+camera_y, j+camera_x).get_type()];
+        }
+        this->base_output.push_back(current_line);
+    }
+}
+
 void Screen::render_map()
 {
-    std::cout << this->max_width<< "\n";
+    // std::cout << this->max_width<< "\n";
+    // put map into base
+    this->base_output.clear();
+    this->add_blockmap_to_base();
+    // put player stat into base
+    
+    this->print_base();
 }
 
 void Screen::render()
@@ -400,5 +434,41 @@ int Screen::wait_select()
             return this->mark_pos;
         }
         this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
+    }
+}
+
+std::string read_string(std::ifstream &fin){
+    std::string readed_string;
+    while (1)
+    {
+        getline(fin, readed_string);
+        if (readed_string != "")
+        {
+            break;
+        }
+    }
+    return readed_string;
+}
+
+void Screen::load_block_texture(){
+    std::string file_path = "texture.txt";
+    std::ifstream fin(file_path);
+    if (fin)
+    {
+        int block_count;
+        fin >> block_count;
+        for (int i = 0; i < block_count; i++)
+        {
+            std::string block_name = read_string(fin);
+            std::string block_texture = read_string(fin);
+            this->block_texture_map[block_name] = block_texture;
+            // std::cout << block_name << ": " << block_texture << "\n";
+        }
+    }
+    else
+    {
+        std::cerr << "texture.txt is not found.\n";
+        exit(1);
+
     }
 }

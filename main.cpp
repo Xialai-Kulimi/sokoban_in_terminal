@@ -20,7 +20,8 @@ int main(){
     screen.wait_select();
 
     Map map("mission1");
-    screen.set_mode("map");
+    
+    screen.init_map(map);
     screen.render();
 
 }

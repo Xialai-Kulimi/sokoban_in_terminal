@@ -1,3 +1,4 @@
+6
 wall
 |=|
 player
@@ -9,3 +10,4 @@ end
 air
  . 
 placed
+[X]

@@ -4,8 +4,6 @@
 #include <iostream>
 #include <cmath>
 
-
-
 Map::Map()
 {
     this->row = 0;
@@ -79,7 +77,6 @@ void Map::generate_map()
     }
 }
 
-
 std::string Map::to_string()
 {
     std::string map_string = "Map(\n";
@@ -95,4 +92,20 @@ std::string Map::to_string()
     map_string = map_string + ")\n";
 
     return map_string;
+}
+
+Block Map::get(int block_row, int block_column)
+{
+    // printf("r: %d, c: %d\n", block_row, block_column);
+    return this->map[block_row][block_column];
+}
+
+int Map::get_column()
+{
+    return this->column;
+}
+
+int Map::get_row()
+{
+    return this->row;
 }

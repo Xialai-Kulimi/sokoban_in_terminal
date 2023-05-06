@@ -18,4 +18,8 @@ public:
     Map(std::string); // init with map filename
 
     std::string to_string();
+    Block get(int, int);
+    int get_row();
+    int get_column();
+
 };
