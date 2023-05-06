@@ -70,20 +70,32 @@ void Screen::fill(char texture)
     std::cout << content;
 }
 
-std::string Screen::get_key()
+std::string Screen::get_key(bool debug)
 {
 #ifdef _WIN32
     int recv_key = _getch();
+    if (debug)
+    {
+        std::cout << "recv: " << recv_key << "\n";
+    }
+    
+    
     // force exit (ctrl+c)
     if (recv_key == 3)
     {
         exit(0);
     }
+    
 
     if (recv_key == 0)
     {
         // the arrow key was pressed
+        
         recv_key = _getch();
+        if (debug)
+    {
+        std::cout << "recv: " << recv_key << "\n";
+    }
         switch (recv_key)
         {
 
@@ -136,7 +148,12 @@ std::string Screen::get_key()
 
             // printf("Input available\n");
             read(fileno(stdin), &recv_char, 3);
-            // printf("%s_%d_%d_%d_\n", recv_char, recv_char[0], recv_char[1], recv_char[2]);
+            if (debug)
+            {
+                printf("\n%d_%d_%d\n", recv_char[0], recv_char[1], recv_char[2]);
+            }
+            
+            
             break;
         }
         else if (res < 0)
@@ -159,6 +176,8 @@ std::string Screen::get_key()
             return "space";
         case '\n':
             return "enter";
+        case 27:
+            return "esc";
         }
         return std::string(recv_char);
     }
@@ -179,10 +198,6 @@ std::string Screen::get_key()
 
 #endif
     return "";
-}
-
-std::vector<int> Screen::get_arrow()
-{
 }
 
 void Screen::test()
@@ -469,6 +484,18 @@ void Screen::load_block_texture(){
     {
         std::cerr << "texture.txt is not found.\n";
         exit(1);
-
     }
+}
+
+int Screen::play_map(){
+    while (1)
+    {
+        // render map and player stat
+        this->render();
+        // recv key
+        // find player pos
+        // 
+        
+    }
+    
 }

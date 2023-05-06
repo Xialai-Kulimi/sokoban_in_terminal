@@ -50,7 +50,7 @@ public:
     void test();
     void render();
     void clear();
-    std::string get_key();
+    std::string get_key(bool debug=false);
 
     // display menu
     void init_menu(std::string, std::string, std::string);
