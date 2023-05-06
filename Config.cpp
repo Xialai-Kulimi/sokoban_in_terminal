@@ -24,3 +24,15 @@ std::vector<std::string> generate_align_mode_list()
 }
 
 std::vector<std::string> Config::align_mode_list = generate_align_mode_list();
+
+
+std::vector<std::string> generate_rendering_mode_list()
+{
+    std::vector<std::string> v;
+
+    v.push_back("menu");
+    v.push_back("map");
+    return v;
+}
+
+std::vector<std::string> Config::rendering_mode_list = generate_rendering_mode_list();

@@ -1,4 +1,5 @@
 #include "Screen.h"
+#include "Map.h"
 #include <iostream>
 
 int main(){
@@ -17,4 +18,9 @@ int main(){
     screen.wait_select();
     screen.set_align("center");
     screen.wait_select();
+
+    Map map("mission1");
+    screen.set_mode("map");
+    screen.render();
+
 }

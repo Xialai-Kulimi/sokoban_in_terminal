@@ -33,6 +33,7 @@ private:
     void add_base(std::string, bool);
 
     void render_menu();
+    void render_map();
 
     // user config
     std::string align;
@@ -48,7 +49,10 @@ public:
     std::string get_key();
 
     int wait_select ();
+
+    // user config
     void set_align(std::string);
+    void set_mode(std::string);  // set rendering mode
 
     
 

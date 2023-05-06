@@ -46,7 +46,7 @@ Screen::Screen()
     this->screen_row = w.ws_row;
     this->screen_column = w.ws_col;
 #endif
-    this->max_width = std::min(80, this->screen_column);
+    this->max_width = std::min(81, this->screen_column / 3 * 3);
     this->align = "left";
     this->mode = "menu";
 }
@@ -308,7 +308,8 @@ void Screen::render_menu()
     }
 
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 + 1, 0);
-    int margin_x = std::max((this->screen_column - max_width) / 2 - 1, 0);
+    int margin_x = std::max((this->screen_column - max_width) / 2 , 0);
+    printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
 
     for (int i = 0; i < margin_y; i++)
@@ -317,7 +318,7 @@ void Screen::render_menu()
     }
     for (int i = 0; i < (int)this->base_output.size(); i++)
     {
-        content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ');
+        content = content + "\n" + std::string(margin_x , ' ') + this->base_output[i] + std::string(margin_x, ' ');
     }
 
     for (int i = 0; i < margin_y - 1; i++)
@@ -329,11 +330,20 @@ void Screen::render_menu()
     std::cout << content;
 }
 
+void Screen::render_map()
+{
+    std::cout << this->max_width<< "\n";
+}
+
 void Screen::render()
 {
     if (this->mode == "menu")
     {
         this->render_menu();
+    }
+    else if (this->mode == "map")
+    {
+        this->render_map();
     }
 }
 
@@ -347,6 +357,19 @@ void Screen::set_align(std::string new_align_mode)
     else
     {
         std::cerr << "\"" << new_align_mode << "\" is not a valid align mode.\n";
+    }
+}
+
+void Screen::set_mode(std::string new_rendering_mode)
+{
+    std::vector<std::string> mode_list = Config::rendering_mode_list;
+    if (std::count(mode_list.begin(), mode_list.end(), new_rendering_mode))
+    {
+        this->mode = new_rendering_mode;
+    }
+    else
+    {
+        std::cerr << "\"" << new_rendering_mode << "\" is not a valid rendering mode.\n";
     }
 }
 
