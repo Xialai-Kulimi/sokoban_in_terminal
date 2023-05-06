@@ -79,24 +79,22 @@ std::string Screen::get_key(bool debug)
     {
         std::cout << "recv: " << recv_key << "\n";
     }
-    
-    
+
     // force exit (ctrl+c)
     if (recv_key == 3)
     {
         exit(0);
     }
-    
 
     if (recv_key == 0)
     {
         // the arrow key was pressed
-        
+
         recv_key = _getch();
         if (debug)
-    {
-        std::cout << "recv: " << recv_key << "\n";
-    }
+        {
+            std::cout << "recv: " << recv_key << "\n";
+        }
         switch (recv_key)
         {
 
@@ -118,6 +116,8 @@ std::string Screen::get_key(bool debug)
             return "enter";
         case 32:
             return "space";
+        case 27:
+            return "esc";
         }
 
         return std::string(1, (char)recv_key);
@@ -153,8 +153,7 @@ std::string Screen::get_key(bool debug)
             {
                 printf("\n%d_%d_%d\n", recv_char[0], recv_char[1], recv_char[2]);
             }
-            
-            
+
             break;
         }
         else if (res < 0)
@@ -253,7 +252,6 @@ std::string Screen::to_center(std::string input_string)
     return std::string(margin_x, ' ') + input_string + std::string(margin_x, ' ');
 }
 
-
 void Screen::add_base(std::string newline, bool center = false)
 {
     if (newline == "")
@@ -324,9 +322,10 @@ void Screen::render_menu()
     this->print_base();
 }
 
-void Screen::print_base(){
+void Screen::print_base()
+{
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 + 1, 0);
-    int margin_x = std::max((this->screen_column - this->max_width) / 2 , 0);
+    int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
 
@@ -336,7 +335,7 @@ void Screen::print_base(){
     }
     for (int i = 0; i < (int)this->base_output.size(); i++)
     {
-        content = content + "\n" + std::string(margin_x , ' ') + this->base_output[i] + std::string(margin_x, ' ');
+        content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ');
     }
 
     for (int i = 0; i < margin_y - 1; i++)
@@ -348,7 +347,8 @@ void Screen::print_base(){
     std::cout << content;
 }
 
-void Screen::init_map(Map map){
+void Screen::init_map(Map map)
+{
     this->map = map;
     this->set_mode("map");
     this->map_row = map.get_row();
@@ -357,18 +357,18 @@ void Screen::init_map(Map map){
     this->camera_y = 0;
     this->max_block_column = this->max_width / 3;
     this->max_block_row = this->max_block_column;
-
 }
-void Screen::add_blockmap_to_base(){
+void Screen::add_blockmap_to_base()
+{
     int print_row = std::min(this->map.get_row(), this->max_block_row);
     int print_column = std::min(this->map.get_column(), this->max_block_column);
-    
+
     for (int i = 0; i < print_row; i++)
     {
         std::string current_line = "";
         for (int j = 0; j < print_column; j++)
         {
-            current_line = current_line + this->block_texture_map[this->map.get(i+camera_y, j+camera_x).get_type()];
+            current_line = current_line + this->block_texture_map[this->map.get(i + camera_y, j + camera_x).get_type()];
         }
         this->base_output.push_back(current_line);
     }
@@ -381,7 +381,7 @@ void Screen::render_map()
     this->base_output.clear();
     this->add_blockmap_to_base();
     // put player stat into base
-    
+
     this->print_base();
 }
 
@@ -456,7 +456,8 @@ int Screen::wait_select()
     }
 }
 
-std::string read_string(std::ifstream &fin){
+std::string read_string(std::ifstream &fin)
+{
     std::string readed_string;
     while (1)
     {
@@ -469,7 +470,8 @@ std::string read_string(std::ifstream &fin){
     return readed_string;
 }
 
-void Screen::load_block_texture(){
+void Screen::load_block_texture()
+{
     std::string file_path = "texture.txt";
     std::ifstream fin(file_path);
     if (fin)
@@ -491,15 +493,14 @@ void Screen::load_block_texture(){
     }
 }
 
-int Screen::play_map(){
+int Screen::play_map()
+{
     while (1)
     {
         // render map and player stat
         this->render();
         // recv key
         // find player pos
-        // 
-        
+        //
     }
-    
 }
