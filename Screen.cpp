@@ -313,18 +313,19 @@ void Screen::render_menu()
 
     for (int i = 0; i < margin_y; i++)
     {
-        content = content + std::string(this->screen_column, ' ') + "\n";
+        content = content + "\n" + std::string(this->screen_column, ' ');
     }
     for (int i = 0; i < (int)this->base_output.size(); i++)
     {
-        content = content + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ') + "\n";
+        content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ');
     }
 
     for (int i = 0; i < margin_y - 1; i++)
     {
-        content = content + std::string(this->screen_column, ' ') + "\n";
+        content = content + "\n" + std::string(this->screen_column, ' ');
     }
-    content = content + std::string(this->screen_column, ' ');
+
+    content = content + "\n" + std::string(this->screen_column, ' ');
     std::cout << content;
 }
 
