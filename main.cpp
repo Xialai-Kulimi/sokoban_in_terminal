@@ -1,6 +1,9 @@
 #include "Screen.h"
+#include <iostream>
 
 int main(){
+    std::ios::sync_with_stdio(false);
+
     Screen screen;
 
     screen.init_menu(

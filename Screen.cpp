@@ -352,6 +352,7 @@ void Screen::set_align(std::string new_align_mode)
 
 int Screen::wait_select()
 {
+    this->mark_pos = 0;
     if (this->mode != "menu")
     {
         std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\".\n";
