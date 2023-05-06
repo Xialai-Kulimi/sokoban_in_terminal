@@ -179,20 +179,6 @@ std::string Screen::get_key()
     return "";
 }
 
-int Screen::get_up_or_down()
-{
-    std::string recv_key = this->get_key();
-    if (recv_key == "w" || recv_key == "up")
-    {
-        return 1;
-    }
-    else if (recv_key == "s" || recv_key == "down")
-    {
-        return -1;
-    }
-    return 0;
-}
-
 std::vector<int> Screen::get_arrow()
 {
 }
@@ -253,6 +239,7 @@ void Screen::clean_base()
 {
     this->base_output.clear();
 }
+
 void Screen::add_base(std::string newline, bool center = false)
 {
     if (newline == "")
@@ -263,7 +250,8 @@ void Screen::add_base(std::string newline, bool center = false)
 
     if (center && newline.length() > this->max_width)
     {
-        std::cerr << "Error, you can't center a string which is longer then max_width.\n";
+        // std::cerr << "Error, you can't center a string which is longer then max_width.\n";
+        // auto align to left when newline is too long
         center = false;
     }
 
@@ -280,7 +268,8 @@ void Screen::add_base(std::string newline, bool center = false)
     }
 }
 
-void Screen::render_menu(){
+void Screen::render_menu()
+{
     // generate base window, and make the window in the center
     this->base_output.clear();
 
@@ -288,7 +277,7 @@ void Screen::render_menu(){
 
     this->add_base("# " + this->title, render_center);
     this->add_base("");
-    this->add_base(this->description);
+    this->add_base(this->description, render_center);
     this->add_base("");
     this->add_base("[ " + this->question + " ]", render_center);
     this->add_base("");
@@ -345,7 +334,6 @@ void Screen::render()
     {
         this->render_menu();
     }
-    
 }
 
 void Screen::set_align(std::string new_align_mode)
@@ -358,5 +346,34 @@ void Screen::set_align(std::string new_align_mode)
     else
     {
         std::cerr << "\"" << new_align_mode << "\" is not a valid align mode.\n";
+    }
+}
+
+int Screen::wait_select()
+{
+    if (this->mode != "menu")
+    {
+        std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\".\n";
+        this->mode = "menu";
+    }
+
+    while (1)
+    {
+        this->render();
+        std::string recv_key = this->get_key();
+
+        if (recv_key == "w" || recv_key == "up")
+        {
+            this->mark_pos -= 1;
+        }
+        else if (recv_key == "s" || recv_key == "down")
+        {
+            this->mark_pos += 1;
+        }
+        else if (recv_key == "enter" || recv_key == "space")
+        {
+            return this->mark_pos;
+        }
+        this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
     }
 }

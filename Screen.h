@@ -11,7 +11,7 @@ private:
 
     int screen_row, screen_column;
 
-    int get_up_or_down();
+    
     std::vector<int> get_arrow();  // {1, 0} for right, {0, 1} for up
 
 
@@ -25,7 +25,7 @@ private:
     
     std::string to_center(std::string);
 
-    std::string align;
+    
 
     std::vector<std::string> base_output;
     
@@ -33,6 +33,9 @@ private:
     void add_base(std::string, bool);
 
     void render_menu();
+
+    // user config
+    std::string align;
 public:
     Screen();
     
@@ -44,7 +47,7 @@ public:
 
     std::string get_key();
 
-    // int wait_menu();
+    int wait_select ();
     void set_align(std::string);
 
     

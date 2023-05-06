@@ -2,18 +2,16 @@
 
 int main(){
     Screen screen;
+
     screen.init_menu(
-        "Example title", 
-        "Example description, this is an example description. Hope this sentence is long enough.",
+        "Sokoban in Terminal", 
+        "Press up/down or w/s to change selection. Press space or enter to confirm.",
         "Please pick an option."
     );
-    screen.add_option("option1");
-    screen.add_option("not an option");
-    screen.add_option("not very good option");
-    screen.render();
-    screen.get_key();
-    
+    screen.add_option("Play");
+    screen.add_option("Setting");
+    screen.add_option("Exit");
+    screen.wait_select();
     screen.set_align("center");
-    screen.render();
-    screen.get_key();
+    screen.wait_select();
 }
