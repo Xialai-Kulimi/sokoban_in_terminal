@@ -1,0 +1,11 @@
+wall
+|=|
+player
+ P 
+box
+[ ]
+end
+ X 
+air
+ . 
+placed

@@ -57,6 +57,9 @@ void Map::generate_map()
             case '2':
                 current_row.push_back(Block("end"));
                 break;
+            case '3':
+                current_row.push_back(Block("placed"));
+                break;
             case '-':
                 current_row.push_back(Block("air"));
                 break;

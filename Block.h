@@ -12,4 +12,3 @@ public:
     Block(std::string);
     std::string to_string();
 };
-

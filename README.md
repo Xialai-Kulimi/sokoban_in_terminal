@@ -7,7 +7,7 @@ Sokoban in terminal, NTPU Object Oriented Programming coursework
   |[X][X][X] .  .  .  . |
   | .  .  .  .  .  .  . |
   |[ ][ ][ ] .  .  .  . |
-  | .  . (P) .  .  .  . |
+  | .  .  P  .  .  .  . |
   | .  .  .  .  .  .  . |
   | .  .  .  .  . [ ] . | 
 
@@ -68,10 +68,11 @@ Example map
     玩家  
     感覺可以在推動箱子的時候做一點動畫
 
-4. `1` box  
+4. `1` box  `[ ]`
     箱子  
-5. `2` end  
+5. `2` end  ` X `
     終點  
+6. `3` placed `[X]`
 
 ## Maps
 地圖儲存在`/maps`裡面，應該要做成可以隨時重整將新的地圖放進去，我也要設計一些地圖放進去。
