@@ -261,7 +261,7 @@ void Screen::add_base(std::string newline, bool center = false)
         return;
     }
 
-    if (center && newline.length() > this->max_width)
+    if (center && (int)newline.length() > this->max_width)
     {
         // std::cerr << "Error, you can't center a string which is longer then max_width.\n";
         // auto align to left when newline is too long
