@@ -43,6 +43,7 @@ private:
     void load_block_texture();
     // user config
     std::string align;
+    bool clear_screen_before_render;
 public:
     Screen();
 

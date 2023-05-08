@@ -51,6 +51,7 @@ Screen::Screen()
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
+    this->clear_screen_before_render = false;
 }
 
 void Screen::fill(char texture)
@@ -386,6 +387,9 @@ void Screen::render_map()
 
 void Screen::render()
 {
+    if (this->clear_screen_before_render){
+        this->clear();
+    }
     if (this->mode == "menu")
     {
         this->render_menu();

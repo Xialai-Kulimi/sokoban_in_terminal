@@ -19,7 +19,7 @@ int main(){
     screen.set_align("center");
     screen.wait_select();
 
-    Map map("mission1");
+    Map map("mission3");
     
     screen.init_map(map);
     screen.render();
