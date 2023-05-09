@@ -23,5 +23,7 @@ int main(){
     
     screen.init_map(map);
     screen.render();
+    screen.init_map(Map("mission1"));
+    screen.render();
 
 }

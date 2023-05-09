@@ -370,7 +370,7 @@ void Screen::add_blockmap_to_base(){
         {
             current_line = current_line + this->block_texture_map[this->map.get(i+camera_y, j+camera_x).get_type()];
         }
-        this->base_output.push_back(current_line);
+        this->base_output.push_back(this->to_center(current_line));
     }
 }
 
