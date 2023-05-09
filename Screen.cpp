@@ -324,7 +324,7 @@ void Screen::render_menu()
 
 void Screen::print_base()
 {
-    int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 + 1, 0);
+    int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2, 0);
     int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
