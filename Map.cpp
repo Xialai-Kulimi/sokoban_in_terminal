@@ -109,3 +109,23 @@ int Map::get_row()
 {
     return this->row;
 }
+
+std::vector<int> Map::find_player_pos(){
+    std::vector<int> pos;
+    for (int r = 0; r < this->row; r++)
+    {
+        for (int c = 0; c < this->column; c++)
+        {
+            if (this->map[r][c].get_type() == "player")
+            {
+                pos.push_back(r);
+                pos.push_back(c);
+                return pos;
+            }   
+        }
+    }
+    std::cerr << "Player is not found in the map.\n";
+    pos.push_back(-1);
+    pos.push_back(-1);
+    return pos;
+}
