@@ -527,12 +527,13 @@ int Screen::play_map()
 {
     while (1)
     {
+        printf("play_map()\n");
         // render map and player stat
         this->render();
         // recv key
-        std::vector<int> recv_vecotr = this->get_arrow();
+        std::vector<int> recv_vector = this->get_arrow();
         // find player pos
-        std::vector<int> player_pos = this->map.find_player_pos();
-        //
+        // std::vector<int> player_pos = this->map.find_player_pos();
+        this->map.player_move(recv_vector);
     }
 }

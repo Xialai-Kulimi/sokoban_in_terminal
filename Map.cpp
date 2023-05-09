@@ -129,3 +129,21 @@ std::vector<int> Map::find_player_pos(){
     pos.push_back(-1);
     return pos;
 }
+
+void Map::swap(int row_1, int column_1, int row_2, int column_2){
+    Block temp = this->get(row_1, column_1);
+    this->map[row_1][column_1] = this->get(row_2, column_2);
+    this->map[row_2][column_2] = temp;
+}
+
+bool Map::player_move(std::vector<int> mov_vector){
+    std::vector<int> pos = this->find_player_pos();
+    Block target_block = this->get(pos[0]+mov_vector[0], pos[1]+mov_vector[1]);
+    std::cout << target_block.to_string() << "\n";
+
+    if (target_block.get_type() == "air")
+    {
+        this->swap(pos[0], pos[1], pos[0]+mov_vector[0], pos[1]+mov_vector[1]);
+    }
+    
+}
