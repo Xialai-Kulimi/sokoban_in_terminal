@@ -17,10 +17,7 @@ private:
     int camera_x, camera_y;
     int max_block_column, max_block_row;
 
-    
     std::vector<int> get_arrow();  // {1, 0} for right, {0, 1} for up
-
-
     
     void fill(char);
     void wait(float);
@@ -62,7 +59,6 @@ public:
     void init_map(Map);
     int play_map();  // return score
     
-
     // user config
     void set_align(std::string);
     void set_mode(std::string);  // set rendering mode
