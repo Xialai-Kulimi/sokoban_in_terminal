@@ -10,9 +10,10 @@ Map::Map()
     this->column = 0;
 }
 
-Map::Map(std::string filename)
+Map::Map(int map_order)
 {
-    std::string file_path = "maps/" + filename + ".txt";
+    char file_path[100];
+    snprintf(file_path, 100, "maps/mission%d.txt", map_order);
     std::ifstream fin(file_path);
     if (fin)
     {
@@ -148,7 +149,6 @@ bool Map::player_move(std::vector<int> mov_vector)
     Block player_block = this->get(pos[0], pos[1]);
 
     Block target_block = this->get(pos[0] + mov_vector[0], pos[1] + mov_vector[1]);
-    std::cout << target_block.to_string() << "\n";
 
     if (player_block.get_type() == "player")
     {

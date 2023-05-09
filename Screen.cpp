@@ -51,7 +51,7 @@ Screen::Screen()
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
-    this->clear_screen_before_render = false;
+    this->clear_screen_before_render = true;
 }
 
 void Screen::fill(char texture)
@@ -527,7 +527,6 @@ int Screen::play_map()
 {
     while (1)
     {
-        printf("play_map()\n");
         // render map and player stat
         this->render();
         // recv key

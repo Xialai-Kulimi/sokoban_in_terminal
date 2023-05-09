@@ -12,11 +12,11 @@ private:
     int row, column;
 
     void generate_map();
-    
+
     void swap(int, int, int, int);
 public:
     Map();
-    Map(std::string); // init with map filename
+    Map(int); // init with map number
 
     std::string to_string();
     Block get(int, int);
