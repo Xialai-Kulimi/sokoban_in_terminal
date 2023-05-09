@@ -22,4 +22,6 @@ public:
     int get_row();
     int get_column();
 
+    std::vector<int> find_player_pos();
+
 };

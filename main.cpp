@@ -15,7 +15,7 @@ int main(){
     screen.add_option("Play");
     screen.add_option("Setting");
     screen.add_option("Exit");
-    screen.wait_select();
+    // screen.wait_select();
     screen.set_align("center");
     screen.wait_select();
 
@@ -23,5 +23,7 @@ int main(){
     
     screen.init_map(map);
     screen.render();
+    std::vector<int> p_pos = map.find_player_pos();
+    printf("p_row: %d, p_col: %d\n", p_pos[0], p_pos[1]);
 
 }

@@ -73,5 +73,12 @@
         "algorithm": "cpp",
         "functional": "cpp",
         "version": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/kulimi/GitHub/sokoban_in_terminal",
+            "binaryPath": "/Users/kulimi/GitHub/sokoban_in_terminal/a.out",
+            "binaryArgs": []
+        }
+    ]
 }
