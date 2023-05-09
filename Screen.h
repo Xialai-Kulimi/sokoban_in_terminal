@@ -14,10 +14,10 @@ private:
 
     int screen_row, screen_column;
     int map_row, map_column;
-    int camera_x, camera_y;
+    int camera_column, camera_row;
     int max_block_column, max_block_row;
 
-    std::vector<int> get_arrow();  // {1, 0} for right, {0, 1} for up
+    std::vector<int> get_arrow();  // {row, column} {1, 0} for down, {0, 1} for right
     
     void fill(char);
     void wait(float);

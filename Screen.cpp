@@ -353,8 +353,8 @@ void Screen::init_map(Map map)
     this->set_mode("map");
     this->map_row = map.get_row();
     this->map_column = map.get_column();
-    this->camera_x = 0;
-    this->camera_y = 0;
+    this->camera_column = 0;
+    this->camera_row = 0;
     this->max_block_column = this->max_width / 3;
     this->max_block_row = this->max_block_column;
 }
@@ -368,7 +368,7 @@ void Screen::add_blockmap_to_base()
         std::string current_line = "";
         for (int j = 0; j < print_column; j++)
         {
-            current_line = current_line + this->block_texture_map[this->map.get(i + camera_y, j + camera_x).get_type()];
+            current_line = current_line + this->block_texture_map[this->map.get(i + camera_row, j + camera_column).get_type()];
         }
         this->base_output.push_back(this->to_center(current_line));
     }
@@ -493,6 +493,36 @@ void Screen::load_block_texture()
     }
 }
 
+std::vector<int> Screen::get_arrow(){
+    std::string recv_key = this->get_key();
+    std::vector<int> recv_vector;
+    if (recv_key == "up" || recv_key == "w")
+    {
+        recv_vector.push_back(-1);
+        recv_vector.push_back(0);
+    }
+    else if (recv_key == "left" || recv_key == "a")
+    {
+        recv_vector.push_back(0);
+        recv_vector.push_back(-1);
+    }
+    else if (recv_key == "down" || recv_key == "s")
+    {
+        recv_vector.push_back(1);
+        recv_vector.push_back(0);
+    }
+    else if (recv_key == "right" || recv_key == "d")
+    {
+        recv_vector.push_back(0);
+        recv_vector.push_back(1);
+    }
+    else{
+        recv_vector.push_back(0);
+        recv_vector.push_back(0);
+    }
+    return recv_vector;
+}
+
 int Screen::play_map()
 {
     while (1)
@@ -500,7 +530,9 @@ int Screen::play_map()
         // render map and player stat
         this->render();
         // recv key
+        std::vector<int> recv_vecotr = this->get_arrow();
         // find player pos
+        std::vector<int> player_pos = this->map.find_player_pos();
         //
     }
 }
