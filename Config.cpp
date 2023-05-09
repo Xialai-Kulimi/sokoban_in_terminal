@@ -10,6 +10,7 @@ std::vector<std::string> generate_block_type_list()
     v.push_back("box");
     v.push_back("end");
     v.push_back("placed");
+    v.push_back("player_stand");
     return v;
 }
 

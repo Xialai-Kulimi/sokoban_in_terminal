@@ -73,6 +73,8 @@ Example map
 5. `2` end  ` X `
     終點  
 6. `3` placed `[X]`
+7. `4` player_stand ` P `
+
 
 ## Maps
 地圖儲存在`/maps`裡面，應該要做成可以隨時重整將新的地圖放進去，我也要設計一些地圖放進去。

@@ -1,4 +1,4 @@
-6
+7
 wall
 |=|
 player
@@ -11,3 +11,5 @@ air
  . 
 placed
 [X]
+player_stand
+'P'
