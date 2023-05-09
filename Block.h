@@ -6,7 +6,7 @@ class Block
 {
 private:
     std::string type;
-
+    
 public:
     std::string get_type();
     Block(std::string);

@@ -110,7 +110,8 @@ int Map::get_row()
     return this->row;
 }
 
-std::vector<int> Map::find_player_pos(){
+std::vector<int> Map::find_player_pos()
+{
     std::vector<int> pos;
     for (int r = 0; r < this->row; r++)
     {
@@ -121,7 +122,7 @@ std::vector<int> Map::find_player_pos(){
                 pos.push_back(r);
                 pos.push_back(c);
                 return pos;
-            }   
+            }
         }
     }
     std::cerr << "Player is not found in the map.\n";
@@ -130,20 +131,40 @@ std::vector<int> Map::find_player_pos(){
     return pos;
 }
 
-void Map::swap(int row_1, int column_1, int row_2, int column_2){
+void Map::swap(int row_1, int column_1, int row_2, int column_2)
+{
     Block temp = this->get(row_1, column_1);
     this->map[row_1][column_1] = this->get(row_2, column_2);
     this->map[row_2][column_2] = temp;
 }
 
-bool Map::player_move(std::vector<int> mov_vector){
+bool Map::player_move(std::vector<int> mov_vector)
+{
     std::vector<int> pos = this->find_player_pos();
-    Block target_block = this->get(pos[0]+mov_vector[0], pos[1]+mov_vector[1]);
+    Block target_block = this->get(pos[0] + mov_vector[0], pos[1] + mov_vector[1]);
     std::cout << target_block.to_string() << "\n";
 
     if (target_block.get_type() == "air")
     {
-        this->swap(pos[0], pos[1], pos[0]+mov_vector[0], pos[1]+mov_vector[1]);
+        this->swap(pos[0], pos[1], pos[0] + mov_vector[0], pos[1] + mov_vector[1]);
+        return true;
     }
-    
+    else if (target_block.get_type() == "box")
+    {
+        Block behind_target = this->get(pos[0] + 2 * mov_vector[0], pos[1] + 2 * mov_vector[1]);
+        if (behind_target.get_type() == "air")
+        {
+            this->swap(pos[0] + mov_vector[0], pos[1] + mov_vector[1], pos[0] + 2 * mov_vector[0], pos[1] + 2 * mov_vector[1]);
+            this->swap(pos[0], pos[1], pos[0] + mov_vector[0], pos[1] + mov_vector[1]);
+            return true;
+        }
+        else if (behind_target.get_type() == "end")
+        {
+            this->map[pos[0] + 2 * mov_vector[0]][pos[1] + 2 * mov_vector[1]] = Block("placed");
+            this->map[pos[0] + 1 * mov_vector[0]][pos[1] + 1 * mov_vector[1]] = Block("player");
+            this->map[pos[0]][pos[1]] = Block("air");
+            return true;
+        }
+    }
+    return false;
 }
