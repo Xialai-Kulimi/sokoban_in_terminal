@@ -256,3 +256,18 @@ bool Map::player_move(std::vector<int> mov_vector)
         return false;
     }
 }
+
+bool Map::check_win()
+{
+    for (int row = 0; row < this->row; row++)
+    {
+        for (int column = 0; column < this->column; column++)
+        {
+            if (this->get(row, column).get_type() == "box")
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}

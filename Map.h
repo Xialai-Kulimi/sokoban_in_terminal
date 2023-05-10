@@ -27,4 +27,5 @@ public:
 
     bool player_move(std::vector<int>);
 
+    bool check_win();
 };

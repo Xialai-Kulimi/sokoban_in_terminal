@@ -534,5 +534,10 @@ int Screen::play_map()
         // find player pos
         // std::vector<int> player_pos = this->map.find_player_pos();
         this->map.player_move(recv_vector);
+        if (this->map.check_win())
+        {
+            break;
+        }
+        
     }
 }
