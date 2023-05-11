@@ -19,7 +19,7 @@ private:
 
     std::vector<int> get_arrow();  // {row, column} {1, 0} for down, {0, 1} for right
     
-    void fill(char);
+    void fill(std::string);
     void wait(float);
 
     int mark_pos;

@@ -143,6 +143,8 @@ Sokoban in terminal, NTPU Object Oriented Programming coursework
  ┃                       ┃ | |                     | |
  ┗━━━━━━━━━━━━━━━━━━━━━━━┛ | |=====================| |
 
+━┃┏┓┗┛┣┫┳┻╋
+
 ```
 如果支援ansi，就使用樣式2，棋盤著色的背景，一定會很讚。
 

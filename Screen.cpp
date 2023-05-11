@@ -54,7 +54,7 @@ Screen::Screen()
     this->clear_screen_before_render = true;
 }
 
-void Screen::fill(char texture)
+void Screen::fill(std::string texture)
 {
     std::string content = "";
     for (int i = 0; i < this->screen_row; i++)
@@ -202,21 +202,21 @@ std::string Screen::get_key(bool debug)
 
 void Screen::test()
 {
-    this->fill('X');
-    for (int i = 0; i < 10; i++)
-    {
-        std::string recv_string = this->get_key();
-        std::cout << "get_key: " << recv_string << std::endl;
-    }
-    for (int i = 0; i < 10; i++)
-    {
-        std::string recv_string = this->get_key();
-        for (int j = 0; j < (int)recv_string.length(); j++)
-        {
-            this->fill(recv_string[j]);
-            this->wait(0.1);
-        }
-    }
+    // this->fill("█");
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     std::string recv_string = this->get_key();
+    //     std::cout << "get_key: " << recv_string << std::endl;
+    // }
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     std::string recv_string = this->get_key();
+    //     for (int j = 0; j < (int)recv_string.length(); j++)
+    //     {
+    //         this->fill(recv_string[j]);
+    //         this->wait(0.1);
+    //     }
+    // }
 }
 
 void Screen::wait(float sec)
@@ -365,6 +365,7 @@ void Screen::add_blockmap_to_base()
 
     for (int i = 0; i < print_row; i++)
     {
+        // std::string current_line = std::to_string(i)+": ";
         std::string current_line = "";
         for (int j = 0; j < print_column; j++)
         {

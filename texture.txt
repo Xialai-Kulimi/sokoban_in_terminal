@@ -1,6 +1,6 @@
 7
 wall
-|=|
+###
 player
  P 
 box
