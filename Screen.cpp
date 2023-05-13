@@ -51,7 +51,7 @@ Screen::Screen()
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
-    this->clear_screen_before_render = true;
+    this->clear_screen_before_render = false;
 }
 
 void Screen::fill(std::string texture)
@@ -537,8 +537,7 @@ int Screen::play_map()
         this->map.player_move(recv_vector);
         if (this->map.check_win())
         {
-            break;
+            return 1;
         }
-        
     }
 }
