@@ -6,6 +6,8 @@
 
 Screen screen;
 
+void test_map();
+
 void select_map()
 {
     screen.init_menu(
@@ -21,7 +23,7 @@ void select_map()
         switch (answer)
         {
         case 0:
-            
+            test_map();           
             break;
         case 1:
             
@@ -51,7 +53,7 @@ void test_map()
 
     screen.init_map(map);
     screen.render();
-    screen.init_map(Map(2));
+    screen.init_map(Map(4));
     screen.render();
     std::vector<int> p_pos = map.find_player_pos();
     printf("p_row: %d, p_col: %d\n", p_pos[0], p_pos[1]);
