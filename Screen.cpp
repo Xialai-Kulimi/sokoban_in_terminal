@@ -329,15 +329,30 @@ void Screen::print_base()
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
 
-    for (int i = 0; i < margin_y; i++)
+    for (int i = 0; i < margin_y - 1; i++)
     {
         content = content + "\n" + std::string(this->screen_column, ' ');
     }
+    
+    content = content + "\n" + std::string(margin_x - 1, ' ') + "┏";
+    for (int i = 0; i < screen_column - (margin_x * 2); i++)
+    {
+        content = content + "━";
+    }
+    content = content + "┓" + std::string(margin_x - 1, ' ');
+
     for (int i = 0; i < (int)this->base_output.size(); i++)
     {
-        content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x, ' ');
+        content = content + "\n" + std::string(margin_x - 1, ' ')+ "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ')+ "┃" + std::string(margin_x-1, ' ');
     }
 
+    content = content + "\n" + std::string(margin_x - 1, ' ') + "┗";
+    for (int i = 0; i < screen_column - (margin_x * 2); i++)
+    {
+        content = content + "━";
+    }
+    content = content + "┛" + std::string(margin_x - 1, ' ');
+    
     for (int i = 0; i < margin_y - 1; i++)
     {
         content = content + "\n" + std::string(this->screen_column, ' ');
@@ -384,7 +399,7 @@ void Screen::render_map()
     this->add_blockmap_to_base();
     this->add_base("> Press \"ESC\" to pause, press \"z\" to undo.");
     this->add_base("move count: " + std::to_string(this->move_count));
-    
+
     // put player stat into base
 
     this->print_base();
@@ -392,7 +407,8 @@ void Screen::render_map()
 
 void Screen::render()
 {
-    if (this->clear_screen_before_render){
+    if (this->clear_screen_before_render)
+    {
         this->clear();
     }
     if (this->mode == "menu")
@@ -498,8 +514,9 @@ void Screen::load_block_texture()
     }
 }
 
-std::vector<int> Screen::get_arrow(std::string recv_key){
-    
+std::vector<int> Screen::get_arrow(std::string recv_key)
+{
+
     std::vector<int> recv_vector;
     if (recv_key == "up" || recv_key == "w")
     {
@@ -521,7 +538,8 @@ std::vector<int> Screen::get_arrow(std::string recv_key){
         recv_vector.push_back(0);
         recv_vector.push_back(1);
     }
-    else{
+    else
+    {
         recv_vector.push_back(0);
         recv_vector.push_back(0);
     }
@@ -545,8 +563,7 @@ int Screen::play_map()
         {
             // undo
         }
-        
-        
+
         std::vector<int> recv_vector = this->get_arrow(recv_key);
         this->move_count++;
         // find player pos
