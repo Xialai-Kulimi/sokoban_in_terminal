@@ -16,8 +16,9 @@ private:
     int map_row, map_column;
     int camera_column, camera_row;
     int max_block_column, max_block_row;
+    int move_count;
 
-    std::vector<int> get_arrow();  // {row, column} {1, 0} for down, {0, 1} for right
+    std::vector<int> get_arrow(std::string);  // {row, column} {1, 0} for down, {0, 1} for right
     
     void fill(std::string);
     void wait(float);

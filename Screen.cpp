@@ -358,6 +358,7 @@ void Screen::init_map(Map map)
     this->max_block_column = this->max_width / 3;
     this->max_block_row = this->max_block_column;
 }
+
 void Screen::add_blockmap_to_base()
 {
     int print_row = std::min(this->map.get_row(), this->max_block_row);
@@ -381,6 +382,9 @@ void Screen::render_map()
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
+    this->add_base("> Press \"ESC\" to pause, press \"z\" to undo.");
+    this->add_base("move count: " + std::to_string(this->move_count));
+    
     // put player stat into base
 
     this->print_base();
@@ -494,8 +498,8 @@ void Screen::load_block_texture()
     }
 }
 
-std::vector<int> Screen::get_arrow(){
-    std::string recv_key = this->get_key();
+std::vector<int> Screen::get_arrow(std::string recv_key){
+    
     std::vector<int> recv_vector;
     if (recv_key == "up" || recv_key == "w")
     {
@@ -526,12 +530,25 @@ std::vector<int> Screen::get_arrow(){
 
 int Screen::play_map()
 {
+    this->move_count = 0;
     while (1)
     {
         // render map and player stat
         this->render();
         // recv key
-        std::vector<int> recv_vector = this->get_arrow();
+        std::string recv_key = this->get_key();
+        if (recv_key == "esc")
+        {
+            // popup menu
+        }
+        else if (recv_key == "z")
+        {
+            // undo
+        }
+        
+        
+        std::vector<int> recv_vector = this->get_arrow(recv_key);
+        this->move_count++;
         // find player pos
         // std::vector<int> player_pos = this->map.find_player_pos();
         this->map.player_move(recv_vector);
