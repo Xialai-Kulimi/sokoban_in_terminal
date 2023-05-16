@@ -1,1 +1,2 @@
 max_map_number 4
+show_border 1

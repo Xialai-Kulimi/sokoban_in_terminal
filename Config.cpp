@@ -78,3 +78,4 @@ std::map<std::string, int> load_config_int_map()
 std::map<std::string, int> config_int_map = load_config_int_map();
 
 int Config::max_map_number = config_int_map["max_map_number"];
+bool Config::show_border = config_int_map["show_border"];

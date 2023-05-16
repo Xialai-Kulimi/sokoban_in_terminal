@@ -328,37 +328,59 @@ void Screen::print_base()
     int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
-
-    for (int i = 0; i < margin_y - 1; i++)
+    if (Config::show_border)
     {
+        for (int i = 0; i < margin_y - 1; i++)
+        {
+            content = content + "\n" + std::string(this->screen_column, ' ');
+        }
+
+        content = content + "\n" + std::string(margin_x - 1, ' ') + "┏";
+        for (int i = 0; i < screen_column - (margin_x * 2); i++)
+        {
+            content = content + "━";
+        }
+        content = content + "┓" + std::string(margin_x - 1, ' ');
+
+        for (int i = 0; i < (int)this->base_output.size(); i++)
+        {
+            content = content + "\n" + std::string(margin_x - 1, ' ') + "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "┃" + std::string(margin_x - 1, ' ');
+        }
+
+        content = content + "\n" + std::string(margin_x - 1, ' ') + "┗";
+        for (int i = 0; i < screen_column - (margin_x * 2); i++)
+        {
+            content = content + "━";
+        }
+        content = content + "┛" + std::string(margin_x - 1, ' ');
+
+        for (int i = 0; i < margin_y - 1; i++)
+        {
+            content = content + "\n" + std::string(this->screen_column, ' ');
+        }
         content = content + "\n" + std::string(this->screen_column, ' ');
     }
-    
-    content = content + "\n" + std::string(margin_x - 1, ' ') + "┏";
-    for (int i = 0; i < screen_column - (margin_x * 2); i++)
+    else
     {
-        content = content + "━";
-    }
-    content = content + "┓" + std::string(margin_x - 1, ' ');
 
-    for (int i = 0; i < (int)this->base_output.size(); i++)
-    {
-        content = content + "\n" + std::string(margin_x - 1, ' ')+ "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ')+ "┃" + std::string(margin_x-1, ' ');
-    }
+        for (int i = 0; i < margin_y; i++)
+        {
+            content = content + "\n" + std::string(this->screen_column, ' ');
+        }
 
-    content = content + "\n" + std::string(margin_x - 1, ' ') + "┗";
-    for (int i = 0; i < screen_column - (margin_x * 2); i++)
-    {
-        content = content + "━";
-    }
-    content = content + "┛" + std::string(margin_x - 1, ' ');
-    
-    for (int i = 0; i < margin_y - 1; i++)
-    {
+        for (int i = 0; i < (int)this->base_output.size(); i++)
+        {
+            content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x - 1, ' ');
+        }
+
+        for (int i = 0; i < margin_y; i++)
+        {
+            content = content + "\n" + std::string(this->screen_column, ' ');
+        }
+
         content = content + "\n" + std::string(this->screen_column, ' ');
     }
 
-    content = content + "\n" + std::string(this->screen_column, ' ');
     std::cout << content;
 }
 
