@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "Map.h"
 #include <iostream>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -9,10 +10,9 @@
 #include <dirent.h>
 #endif
 Screen screen;
-
-#ifdef _WIN32
 std::vector<std::string> list_txt(std::string folder_name)
 {
+#ifdef _WIN32
     std::vector<std::string> names;
     std::string search_path = folder_name + "/*.txt";
     WIN32_FIND_DATA fd;
@@ -30,11 +30,9 @@ std::vector<std::string> list_txt(std::string folder_name)
         } while (::FindNextFile(hFind, &fd));
         ::FindClose(hFind);
     }
-    return names;
-}
+ 
 #else
-std::vector<std::string> list_txt(std::string folder_name)
-{
+
     DIR *dr;
     std::vector<std::string> names;
     struct dirent *en;
@@ -52,10 +50,11 @@ std::vector<std::string> list_txt(std::string folder_name)
         }
         closedir(dr); // close all directory
     }
-    return names;
-}
 
 #endif
+    std::sort(names.begin(), names.end());
+    return names;
+}
 
 void select_map()
 {
