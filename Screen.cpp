@@ -442,20 +442,18 @@ void Screen::init_map(Map map)
     this->map_column = map.get_column();
     this->camera_column = 0;
     this->camera_row = 0;
-    this->max_block_column = this->max_width / 3;
-    this->max_block_row = this->max_block_column;
+    this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
+    this->max_block_row = std::min(this->map.get_row(), this->max_block_column);
 }
 
 void Screen::add_blockmap_to_base()
 {
-    int print_row = std::min(this->map.get_row(), this->max_block_row);
-    int print_column = std::min(this->map.get_column(), this->max_block_column);
 
-    for (int i = 0; i < print_row; i++)
+    for (int i = 0; i < this->max_block_row; i++)
     {
         // std::string current_line = std::to_string(i)+": ";
         std::string current_line = "";
-        for (int j = 0; j < print_column; j++)
+        for (int j = 0; j < this->max_block_column; j++)
         {
             current_line = current_line + this->block_texture_map[this->map.get(i + camera_row, j + camera_column).get_type()];
         }
@@ -463,16 +461,27 @@ void Screen::add_blockmap_to_base()
     }
 }
 
-void Screen::render_map()
+void Screen::render_map(bool debug)
 {
 
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
     this->add_base("> Press \"ESC\" to pause, press \"r\" to restart.");
-    this->add_base("move count: " + std::to_string(this->move_count));
-
     // put player stat into base
+    this->add_base("move count: " + std::to_string(this->move_count));
+    if (debug)
+    {
+        this->add_base("");
+        this->add_base("camera_row: " + std::to_string(this->camera_row));
+        this->add_base("camera_column: " + std::to_string(this->camera_column));
+        std::vector<int> pos = this->map.find_player_pos();
+        this->add_base("player_row: " + std::to_string(pos[0]));
+        this->add_base("player_column: " + std::to_string(pos[1]));
+        this->add_base("map_row: " + std::to_string(this->map_row));
+        this->add_base("map_column: " + std::to_string(this->map_column));
+        this->add_base("max_width: " + std::to_string(this->max_width));
+    }
 
     this->print_base();
 }
@@ -652,10 +661,16 @@ int Screen::play_map(std::string map_name)
         }
 
         std::vector<int> recv_vector = this->get_arrow(recv_key);
+
         this->move_count++;
-        // find player pos
-        // std::vector<int> player_pos = this->map.find_player_pos();
         this->map.player_move(recv_vector);
+        // find player pos
+        std::vector<int> player_pos = this->map.find_player_pos();
+        this->camera_row = std::max(player_pos[0] - this->max_block_row / 2, 0);
+        this->camera_column = std::max(player_pos[1] - this->max_block_column / 2, 0);
+        this->camera_row = std::min(this->camera_row, std::max(this->map_row - this->max_block_row, 0));
+        this->camera_column = std::min(this->camera_column, std::max(this->map_column - this->max_block_column, 0));
+
         if (this->map.check_win())
         {
             this->send_popup("You win!");

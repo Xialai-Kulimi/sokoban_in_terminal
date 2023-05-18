@@ -34,7 +34,7 @@ private:
     void add_blockmap_to_base();
 
     void render_menu();
-    void render_map();
+    void render_map(bool debug = false);
 
     void print_base(); // print base_output in the middle of screen
 
@@ -44,7 +44,7 @@ private:
     bool clear_screen_before_render;
     bool show_border;
 
-// user config
+    // user config
     void set_align(std::string);
     void set_mode(std::string); // set rendering mode
 
@@ -74,7 +74,5 @@ public:
     void init_map(Map);
     int play_map(std::string); // return score
 
-    
     friend void setting_theme();
-    
 };
