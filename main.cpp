@@ -81,7 +81,7 @@ void select_map()
         }
         else if (0 <= answer && answer <= (int)map_names.size() - 1)
         {
-            screen.send_popup("loading...");
+            screen.send_popup("loading...", false);
             screen.play_map(map_names[answer]);
         }
     }
