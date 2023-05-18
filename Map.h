@@ -16,7 +16,7 @@ private:
     void swap(int, int, int, int);
 public:
     Map();
-    Map(int); // init with map number
+    Map(std::string); // init with map number
 
     std::string to_string();
     Block get(int, int);

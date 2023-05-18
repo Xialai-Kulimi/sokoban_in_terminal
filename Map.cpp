@@ -10,11 +10,9 @@ Map::Map()
     this->column = 0;
 }
 
-Map::Map(int map_order)
+Map::Map(std::string map_name)
 {
-    char file_path[100];
-    snprintf(file_path, 100, "maps/mission%d.txt", map_order);
-    std::ifstream fin(file_path);
+    std::ifstream fin("maps/" + map_name);
     if (fin)
     {
         fin >> this->row >> this->column;
@@ -28,7 +26,7 @@ Map::Map(int map_order)
     }
     else
     {
-        std::cerr << file_path << " is not found.\n";
+        std::cerr << map_name << " is not found.\n";
     }
 }
 

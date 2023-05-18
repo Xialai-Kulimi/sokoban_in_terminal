@@ -175,7 +175,14 @@ Example map
 ## Maps
 地圖儲存在`/maps`裡面，應該要做成可以隨時重整將新的地圖放進去，我也要設計一些地圖放進去。
 
+## setting
+
+1. choose which value want to change.
+2. 
+
+
 ## config
 show border
 max map number
 align center
+

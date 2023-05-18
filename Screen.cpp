@@ -568,9 +568,9 @@ std::vector<int> Screen::get_arrow(std::string recv_key)
     return recv_vector;
 }
 
-int Screen::play_map(int map_number)
+int Screen::play_map(std::string map_name)
 {
-    this->init_map(Map(map_number));
+    this->init_map(Map(map_name));
     this->move_count = 0;
     while (1)
     {
@@ -588,7 +588,7 @@ int Screen::play_map(int map_number)
         }
         else if (recv_key == "r")
         {
-            return this->play_map(map_number);
+            return this->play_map(map_name);
         }
 
         std::vector<int> recv_vector = this->get_arrow(recv_key);

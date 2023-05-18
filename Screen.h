@@ -18,17 +18,17 @@ private:
     int max_block_column, max_block_row;
     int move_count;
 
-    std::vector<int> get_arrow(std::string);  // {row, column} {1, 0} for down, {0, 1} for right
-    
+    std::vector<int> get_arrow(std::string); // {row, column} {1, 0} for down, {0, 1} for right
+
     void fill(std::string);
     void wait(float);
 
     int mark_pos;
     int max_width;
-    
+
     std::string to_center(std::string);
     std::vector<std::string> base_output;
-    
+
     void add_base(std::string, bool);
 
     void add_blockmap_to_base();
@@ -36,14 +36,14 @@ private:
     void render_menu();
     void render_map();
 
-    void print_base();  // print base_output in the middle of screen
+    void print_base(); // print base_output in the middle of screen
 
     void load_block_texture();
     // user config
     std::string align;
     bool clear_screen_before_render;
-
     
+
 public:
     Screen();
 
@@ -51,18 +51,19 @@ public:
     void test();
     void render();
     void clear();
-    std::string get_key(bool debug=false);
+    std::string get_key(bool debug = false);
 
     // display menu
     void init_menu(std::string, std::string, std::string);
     void add_option(std::string);
-    int wait_select ();
+    int wait_select();
 
     // display map
     void init_map(Map);
-    int play_map(int);  // return score
-    
+    int play_map(std::string); // return score
+
     // user config
     void set_align(std::string);
-    void set_mode(std::string);  // set rendering mode
+    void set_mode(std::string); // set rendering mode
+    
 };

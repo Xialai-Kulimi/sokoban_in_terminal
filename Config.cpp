@@ -37,6 +37,7 @@ std::vector<std::string> generate_rendering_mode_list()
 
     v.push_back("menu");
     v.push_back("map");
+    v.push_back("setting");
     return v;
 }
 
