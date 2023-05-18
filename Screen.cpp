@@ -644,6 +644,7 @@ void Screen::send_popup(std::string popup_message, bool wait)
     this->render();
     if (wait)
     {
+        this->wait(0.5);
         this->get_key();
     }
     
