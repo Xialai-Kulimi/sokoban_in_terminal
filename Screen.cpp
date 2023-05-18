@@ -580,12 +580,12 @@ int Screen::play_map(std::string map_name)
         std::string recv_key = this->get_key();
         if (recv_key == "esc")
         {
-            // popup menu
+            return 0;
         }
-        else if (recv_key == "z")
-        {
-            // undo
-        }
+        // else if (recv_key == "z")
+        // {
+        //     // undo
+        // }
         else if (recv_key == "r")
         {
             return this->play_map(map_name);
