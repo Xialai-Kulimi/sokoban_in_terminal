@@ -34,26 +34,37 @@ void Screen::clear()
 Screen::Screen()
 {
 #ifdef _WIN32
+    this->show_border = false;
+#else
+    this->show_border = true;
+#endif
+
+    this->align = "left";
+    this->mode = "menu";
+    this->load_block_texture();
+    this->clear_screen_before_render = true;
+    this->set_size();
+}
+
+void Screen::set_size()
+{
+#ifdef _WIN32
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     this->screen_column = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     this->screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-    this->show_border = false;
+
 #else
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
     this->screen_row = w.ws_row;
     this->screen_column = w.ws_col;
-    this->show_border = true;
+
 #endif
     this->max_width = std::min(81, (this->screen_column - 4) / 3 * 3);
-    this->align = "left";
-    this->mode = "menu";
-    this->load_block_texture();
-    this->clear_screen_before_render = true;
 }
 
 void Screen::fill(std::string texture)
@@ -446,9 +457,6 @@ void Screen::init_map(Map map)
 
     this->camera_column = 0;
     this->camera_row = 0;
-
-    this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
-    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_block_column), this->screen_row - 5);
 }
 
 void Screen::add_blockmap_to_base()
@@ -468,7 +476,9 @@ void Screen::add_blockmap_to_base()
 
 void Screen::render_map(bool debug)
 {
-
+    // recalculate block map size, for auto resize
+    this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
+    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_block_column), this->screen_row - 5);
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
@@ -493,6 +503,7 @@ void Screen::render_map(bool debug)
 
 void Screen::render()
 {
+    this->set_size();
     if (this->clear_screen_before_render)
     {
         this->clear();
@@ -647,7 +658,6 @@ void Screen::send_popup(std::string popup_message, bool wait)
         this->wait(0.5);
         this->get_key();
     }
-    
 }
 
 int Screen::play_map(std::string map_name)

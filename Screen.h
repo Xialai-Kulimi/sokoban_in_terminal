@@ -54,6 +54,8 @@ private:
     bool popup;
     std::string popup_string;
 
+    void set_size();
+
 
 public:
     Screen();
