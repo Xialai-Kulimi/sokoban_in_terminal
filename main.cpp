@@ -73,32 +73,29 @@ void select_map()
             screen.add_option(map_names[i].substr(0, map_names[i].find_last_of(".")));
         }
         screen.add_option("cancel");
-        int answer;
-        while (1)
+
+        int answer = screen.wait_select();
+        if (answer == (int)map_names.size())
         {
-            answer = screen.wait_select();
-            if (answer == (int)map_names.size())
-            {
-                return;
-            }
-            else if (0 <= answer && answer <= (int)map_names.size() - 1)
-            {
-                break;
-            }
+            return;
         }
-        screen.play_map(map_names[answer]);
+        else if (0 <= answer && answer <= (int)map_names.size() - 1)
+        {
+            screen.play_map(map_names[answer]);
+        }
     }
 }
 
-std::string bool_to_string(bool bool_value){
+std::string bool_to_string(bool bool_value)
+{
     if (bool_value)
     {
         return "True";
     }
-    else{
+    else
+    {
         return "False";
     }
-    
 }
 
 void setting_theme()
