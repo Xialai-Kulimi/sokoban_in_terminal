@@ -62,7 +62,7 @@ public:
     // display menu
     void init_menu(std::string, std::string, std::string);
     void add_option(std::string);
-    int wait_select();
+    int wait_select(bool reset = true);
 
     // display map
     void init_map(Map);

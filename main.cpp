@@ -103,18 +103,19 @@ std::string bool_to_string(bool bool_value){
 
 void setting_theme()
 {
+    screen.mark_pos = 0;
     while (1)
     {
         screen.init_menu(
             "Setting for Sokoban",
             "Press up/down or w/s to change selection. Press space or enter to select the one you want to change.",
             "Please pick an option.");
-            
+
         screen.add_option("show border: " + bool_to_string(screen.show_border));
         screen.add_option("align: " + screen.align);
         screen.add_option("cancel");
 
-        int answer = screen.wait_select();
+        int answer = screen.wait_select(false);
         switch (answer)
         {
         case 0:

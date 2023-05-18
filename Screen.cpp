@@ -239,7 +239,6 @@ void Screen::init_menu(
     this->description = new_description;
     this->question = new_question;
     this->options.clear();
-    this->mark_pos = 0;
 }
 
 void Screen::add_option(std::string new_option)
@@ -471,9 +470,13 @@ void Screen::set_mode(std::string new_rendering_mode)
     }
 }
 
-int Screen::wait_select()
+int Screen::wait_select(bool reset)
 {
-    this->mark_pos = 0;
+    if (reset)
+    {
+        this->mark_pos = 0;
+    }
+
     if (this->mode != "menu")
     {
         std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\".\n";
