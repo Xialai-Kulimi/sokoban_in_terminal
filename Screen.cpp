@@ -570,7 +570,7 @@ int Screen::wait_select(bool reset)
 
     if (this->mode != "menu")
     {
-        std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\".\n";
+        std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\" (is \""+this->mode+"\").\n";
         this->mode = "menu";
     }
 
