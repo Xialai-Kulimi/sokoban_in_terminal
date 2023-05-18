@@ -333,24 +333,30 @@ void Screen::print_base()
         int base_row = (int)this->base_output.size();
         for (int i = 0; i < base_row; i++)
         {
-            if (abs(i - (base_row / 2)) <= 1)
+
+            int base_column = (int)this->base_output[i].size();
+            for (int j = 0; j < base_column; j++)
             {
-                int base_column = (int)this->base_output[i].size();
-                for (int j = 0; j < base_column; j++)
+                if (i == (base_row / 2))
                 {
-                    if (i == (base_row / 2))
+                    for (int k = 0; k < (int)this->popup_string.length(); k++)
                     {
-                        for (int k = 0; k < (int)this->popup_string.length(); k++)
-                        {
-                            this->base_output[i][base_column / 2 - (int)this->popup_string.length() / 2 + k] = this->popup_string[k];
-                        }
+                        this->base_output[i][base_column / 2 - (int)this->popup_string.length() / 2 + k] = this->popup_string[k];
                     }
-                    else
+                }
+                else if (abs(i - (base_row / 2)) == 1)
+                {
+                    if (j == base_column / 2 - (int)this->popup_string.length() / 2 + 1)
                     {
-                        if (abs(j - (base_column / 2)) <= (int)this->popup_string.length() / 2)
-                        {
-                            this->base_output[i][j] = ' ';
-                        }
+                        this->base_output[i][j] = '[';
+                    }
+                    else if (j == base_column / 2 + (int)this->popup_string.length() / 2 - 2)
+                    {
+                        this->base_output[i][j] = ']';
+                    }
+                    else if (abs(j - (base_column / 2)) <= (int)this->popup_string.length() / 2)
+                    {
+                        this->base_output[i][j] = ' ';
                     }
                 }
             }
@@ -420,8 +426,8 @@ void Screen::print_base()
     // return content;
 
     // std::cout << content;
-    std::string real_content = content[0];
-    for (int i = 1; i < (int)content.size(); i++)
+    std::string real_content = "";
+    for (int i = 0; i < (int)content.size(); i++)
     {
         real_content = real_content + "\n" + content[i];
     }
@@ -459,11 +465,11 @@ void Screen::add_blockmap_to_base()
 
 void Screen::render_map()
 {
-    // std::cout << this->max_width<< "\n";
+
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
-    this->add_base("> Press \"ESC\" to pause, press \"z\" to undo, press \"r\" to restart.");
+    this->add_base("> Press \"ESC\" to pause, press \"r\" to restart.");
     this->add_base("move count: " + std::to_string(this->move_count));
 
     // put player stat into base
@@ -486,55 +492,6 @@ void Screen::render()
     {
         this->render_map();
     }
-
-    // if (this->popup)
-    // {
-    //     std::string string_cotent = "";
-    //     int popup_message_len = this->popup_string.length();
-    //     int margin_x = (this->screen_column - popup_message_len) / 2 - 3;
-    //     for (int i = 0; i < (int)content.size(); i++)
-    //     {
-    //         if (i - this->screen_row / 2 == 0)
-    //         {
-
-    //             string_cotent = string_cotent + std::string(margin_x, ' ') + " [ " + this->popup_string + " ] " + std::string(margin_x, ' ') + "\n";
-    //         }
-    //         else if (abs(i - this->screen_row / 2) == 1)
-    //         {
-
-    //             for (int j = 0; j < margin_x; j++)
-    //             {
-    //                 string_cotent = string_cotent + content[i][j];
-    //             }
-    //             for (int j = 0; j < this->screen_column - 2 * margin_x; j++)
-    //             {
-    //                 string_cotent = string_cotent + " ";
-    //             }
-
-    //             for (int j = (this->screen_column - margin_x); j < this->screen_column; j++)
-    //             {
-    //                 string_cotent = string_cotent + content[i][j];
-    //             }
-    //             string_cotent = string_cotent + "\n";
-    //         }
-    //         else
-    //         {
-    //             string_cotent = string_cotent + content[i] + "\n";
-    //         }
-    //     }
-    //     std::cout << string_cotent;
-    //     this->popup = false;
-    //     this->popup_string = "";
-    // }
-    // else
-    // {
-    //     std::string string_cotent = "";
-    //     for (int i = 0; i < (int)content.size(); i++)
-    //     {
-    //         string_cotent = string_cotent + content[i] + "\n";
-    //     }
-    //     std::cout << string_cotent;
-    // }
 }
 
 void Screen::set_align(std::string new_align_mode)
@@ -689,10 +646,6 @@ int Screen::play_map(std::string map_name)
             this->send_popup("You quit the game.");
             return 0;
         }
-        // else if (recv_key == "z")
-        // {
-        //     // undo
-        // }
         else if (recv_key == "r")
         {
             return this->play_map(map_name);
@@ -722,6 +675,7 @@ void Screen::toggle_align()
         this->set_align("center");
     }
 }
+
 void Screen::toggle_show_border()
 {
     this->show_border = !this->show_border;
