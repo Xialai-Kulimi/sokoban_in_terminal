@@ -420,10 +420,12 @@ void Screen::print_base()
     // return content;
 
     // std::cout << content;
-    for (int i = 0; i < (int)content.size(); i++)
+    std::string real_content = content[0];
+    for (int i = 1; i < (int)content.size(); i++)
     {
-        std::cout << content[i] << "\n";
+        real_content = real_content + "\n" + content[i];
     }
+    std::cout << real_content;
 }
 
 void Screen::init_map(Map map)
@@ -570,7 +572,7 @@ int Screen::wait_select(bool reset)
 
     if (this->mode != "menu")
     {
-        std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\" (is \""+this->mode+"\").\n";
+        std::cerr << "Cannot wait for option selection when rendering mode is not \"menu\" (is \"" + this->mode + "\").\n";
         this->mode = "menu";
     }
 
