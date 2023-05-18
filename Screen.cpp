@@ -204,7 +204,7 @@ std::string Screen::get_key(bool debug)
 
 void Screen::test()
 {
-    // this->fill("█");
+    // this->fill("�i");
     // for (int i = 0; i < 10; i++)
     // {
     //     std::string recv_string = this->get_key();
@@ -257,7 +257,7 @@ void Screen::add_base(std::string newline, bool center = false)
 {
     if (newline == "")
     {
-        this->base_output.push_back("");
+        this->base_output.push_back(std::string(this->max_width, ' '));
         return;
     }
 
@@ -276,7 +276,8 @@ void Screen::add_base(std::string newline, bool center = false)
     {
         for (int i = 0; i < std::ceil(((float)newline.length()) / ((float)this->max_width)); i++)
         {
-            this->base_output.push_back(newline.substr(i * this->max_width, this->max_width));
+            std::string new_string = newline.substr(i * this->max_width, this->max_width);
+            this->base_output.push_back(new_string + std::string(this->max_width - (int)new_string.length(), ' '));
         }
     }
 }
@@ -325,64 +326,104 @@ void Screen::render_menu()
 
 void Screen::print_base()
 {
+
+    if (this->popup)
+    {
+        // add popup to base
+        int base_row = (int)this->base_output.size();
+        for (int i = 0; i < base_row; i++)
+        {
+            if (abs(i - (base_row / 2)) <= 1)
+            {
+                int base_column = (int)this->base_output[i].size();
+                for (int j = 0; j < base_column; j++)
+                {
+                    if (i == (base_row / 2))
+                    {
+                        for (int k = 0; k < (int)this->popup_string.length(); k++)
+                        {
+                            this->base_output[i][base_column / 2 - (int)this->popup_string.length() / 2 + k] = this->popup_string[k];
+                        }
+                    }
+                    else
+                    {
+                        if (abs(j - (base_column / 2)) <= (int)this->popup_string.length() / 2)
+                        {
+                            this->base_output[i][j] = ' ';
+                        }
+                    }
+                }
+            }
+        }
+        this->popup = false;
+    }
+
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 - 1, 0);
     int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
-    std::string content = "";
+    std::vector<std::string> content;
+
+    for (int i = 0; i < margin_y - 1; i++)
+    {
+        content.push_back(std::string(this->screen_column, ' '));
+    }
+
     if (this->show_border)
     {
-        for (int i = 0; i < margin_y - 1; i++)
-        {
-            content = content + "\n" + std::string(this->screen_column, ' ');
-        }
-
-        content = content + "\n" + std::string(margin_x - 1, ' ') + "┏";
+        std::string this_line = std::string(margin_x - 1, ' ') + "?";
         for (int i = 0; i < screen_column - (margin_x * 2); i++)
         {
-            content = content + "━";
+            this_line = this_line + "?";
         }
-        content = content + "┓" + std::string(margin_x - 1, ' ');
-
-        for (int i = 0; i < (int)this->base_output.size(); i++)
-        {
-            content = content + "\n" + std::string(margin_x - 1, ' ') + "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "┃" + std::string(margin_x - 1, ' ');
-        }
-
-        content = content + "\n" + std::string(margin_x - 1, ' ') + "┗";
-        for (int i = 0; i < screen_column - (margin_x * 2); i++)
-        {
-            content = content + "━";
-        }
-        content = content + "┛" + std::string(margin_x - 1, ' ');
-
-        for (int i = 0; i < margin_y - 1; i++)
-        {
-            content = content + "\n" + std::string(this->screen_column, ' ');
-        }
-        content = content + "\n" + std::string(this->screen_column, ' ');
+        this_line = this_line + "?" + std::string(margin_x - 1, ' ');
+        content.push_back(this_line);
     }
     else
     {
-
-        for (int i = 0; i < margin_y; i++)
-        {
-            content = content + "\n" + std::string(this->screen_column, ' ');
-        }
+        content.push_back(std::string(this->screen_column, ' '));
+    }
+    if (this->show_border)
+    {
 
         for (int i = 0; i < (int)this->base_output.size(); i++)
         {
-            content = content + "\n" + std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x - 1, ' ');
+            content.push_back(std::string(margin_x - 1, ' ') + "?" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "?" + std::string(margin_x - 1, ' '));
         }
-
-        for (int i = 0; i < margin_y; i++)
+    }
+    else
+    {
+        for (int i = 0; i < (int)this->base_output.size(); i++)
         {
-            content = content + "\n" + std::string(this->screen_column, ' ');
+            content.push_back(std::string(margin_x, ' ') + this->base_output[i] + std::string(margin_x - 1, ' '));
         }
-
-        content = content + "\n" + std::string(this->screen_column, ' ');
     }
 
-    std::cout << content;
+    if (this->show_border)
+    {
+        std::string this_line = std::string(margin_x - 1, ' ') + "?";
+        for (int i = 0; i < screen_column - (margin_x * 2); i++)
+        {
+            this_line = this_line + "?";
+        }
+        this_line = this_line + "?" + std::string(margin_x - 1, ' ');
+        content.push_back(this_line);
+    }
+    else
+    {
+        content.push_back(std::string(this->screen_column, ' '));
+    }
+
+    for (int i = 0; i < margin_y - 1; i++)
+    {
+        content.push_back(std::string(this->screen_column, ' '));
+    }
+    // return content;
+
+    // std::cout << content;
+    for (int i = 0; i < (int)content.size(); i++)
+    {
+        std::cout << content[i] << "\n";
+    }
 }
 
 void Screen::init_map(Map map)
@@ -434,6 +475,7 @@ void Screen::render()
     {
         this->clear();
     }
+    // std::vector<std::string> content;
     if (this->mode == "menu")
     {
         this->render_menu();
@@ -442,6 +484,55 @@ void Screen::render()
     {
         this->render_map();
     }
+
+    // if (this->popup)
+    // {
+    //     std::string string_cotent = "";
+    //     int popup_message_len = this->popup_string.length();
+    //     int margin_x = (this->screen_column - popup_message_len) / 2 - 3;
+    //     for (int i = 0; i < (int)content.size(); i++)
+    //     {
+    //         if (i - this->screen_row / 2 == 0)
+    //         {
+
+    //             string_cotent = string_cotent + std::string(margin_x, ' ') + " [ " + this->popup_string + " ] " + std::string(margin_x, ' ') + "\n";
+    //         }
+    //         else if (abs(i - this->screen_row / 2) == 1)
+    //         {
+
+    //             for (int j = 0; j < margin_x; j++)
+    //             {
+    //                 string_cotent = string_cotent + content[i][j];
+    //             }
+    //             for (int j = 0; j < this->screen_column - 2 * margin_x; j++)
+    //             {
+    //                 string_cotent = string_cotent + " ";
+    //             }
+
+    //             for (int j = (this->screen_column - margin_x); j < this->screen_column; j++)
+    //             {
+    //                 string_cotent = string_cotent + content[i][j];
+    //             }
+    //             string_cotent = string_cotent + "\n";
+    //         }
+    //         else
+    //         {
+    //             string_cotent = string_cotent + content[i] + "\n";
+    //         }
+    //     }
+    //     std::cout << string_cotent;
+    //     this->popup = false;
+    //     this->popup_string = "";
+    // }
+    // else
+    // {
+    //     std::string string_cotent = "";
+    //     for (int i = 0; i < (int)content.size(); i++)
+    //     {
+    //         string_cotent = string_cotent + content[i] + "\n";
+    //     }
+    //     std::cout << string_cotent;
+    // }
 }
 
 void Screen::set_align(std::string new_align_mode)
@@ -573,6 +664,14 @@ std::vector<int> Screen::get_arrow(std::string recv_key)
     return recv_vector;
 }
 
+void Screen::send_popup(std::string popup_message)
+{
+    this->popup = true;
+    this->popup_string = " [ " + popup_message + " ] ";
+    this->render();
+    this->get_key();
+}
+
 int Screen::play_map(std::string map_name)
 {
     this->init_map(Map(map_name));
@@ -585,6 +684,7 @@ int Screen::play_map(std::string map_name)
         std::string recv_key = this->get_key();
         if (recv_key == "esc")
         {
+            this->send_popup("You quit the game.");
             return 0;
         }
         // else if (recv_key == "z")
@@ -603,20 +703,24 @@ int Screen::play_map(std::string map_name)
         this->map.player_move(recv_vector);
         if (this->map.check_win())
         {
+            this->send_popup("You win!");
             return 1;
         }
     }
 }
 
-void Screen::toggle_align(){
+void Screen::toggle_align()
+{
     if (this->align == "center")
     {
         this->set_align("left");
     }
-    else{
+    else
+    {
         this->set_align("center");
     }
 }
-void Screen::toggle_show_border(){
+void Screen::toggle_show_border()
+{
     this->show_border = !this->show_border;
 }

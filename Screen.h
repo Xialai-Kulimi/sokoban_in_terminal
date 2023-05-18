@@ -50,6 +50,12 @@ private:
 
     void toggle_align();
     void toggle_show_border();
+
+    bool popup;
+    std::string popup_string;
+
+    void send_popup(std::string);
+
 public:
     Screen();
 
