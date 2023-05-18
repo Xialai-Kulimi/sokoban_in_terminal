@@ -33,7 +33,11 @@ void Screen::clear()
 
 Screen::Screen()
 {
+#ifdef _WIN32
+    this->show_border = false;
+#else
     this->show_border = true;
+#endif
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
