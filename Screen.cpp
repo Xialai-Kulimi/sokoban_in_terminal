@@ -204,7 +204,7 @@ std::string Screen::get_key(bool debug)
 
 void Screen::test()
 {
-    // this->fill("�i");
+    // this->fill("█");
     // for (int i = 0; i < 10; i++)
     // {
     //     std::string recv_string = this->get_key();
@@ -370,12 +370,12 @@ void Screen::print_base()
 
     if (this->show_border)
     {
-        std::string this_line = std::string(margin_x - 1, ' ') + "?";
+        std::string this_line = std::string(margin_x - 1, ' ') + "┏";
         for (int i = 0; i < screen_column - (margin_x * 2); i++)
         {
-            this_line = this_line + "?";
+            this_line = this_line + "━";
         }
-        this_line = this_line + "?" + std::string(margin_x - 1, ' ');
+        this_line = this_line + "┓" + std::string(margin_x - 1, ' ');
         content.push_back(this_line);
     }
     else
@@ -387,7 +387,7 @@ void Screen::print_base()
 
         for (int i = 0; i < (int)this->base_output.size(); i++)
         {
-            content.push_back(std::string(margin_x - 1, ' ') + "?" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "?" + std::string(margin_x - 1, ' '));
+            content.push_back(std::string(margin_x - 1, ' ') + "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "┃" + std::string(margin_x - 1, ' '));
         }
     }
     else
@@ -400,12 +400,12 @@ void Screen::print_base()
 
     if (this->show_border)
     {
-        std::string this_line = std::string(margin_x - 1, ' ') + "?";
+        std::string this_line = std::string(margin_x - 1, ' ') + "┗";
         for (int i = 0; i < screen_column - (margin_x * 2); i++)
         {
-            this_line = this_line + "?";
+            this_line = this_line + "━";
         }
-        this_line = this_line + "?" + std::string(margin_x - 1, ' ');
+        this_line = this_line + "┛" + std::string(margin_x - 1, ' ');
         content.push_back(this_line);
     }
     else
