@@ -49,7 +49,7 @@ Screen::Screen()
     this->screen_column = w.ws_col;
     this->show_border = true;
 #endif
-    this->max_width = std::min(81, this->screen_column / 3 * 3);
+    this->max_width = std::min(81, (this->screen_column - 4) / 3 * 3);
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
@@ -364,8 +364,9 @@ void Screen::print_base()
         this->popup = false;
     }
 
-    int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 - 1, 0);
-    int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
+    int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 - 1, 2);
+    int margin_x = std::max((this->screen_column - this->max_width) / 2, 2);
+
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::vector<std::string> content;
 
@@ -431,7 +432,8 @@ void Screen::print_base()
     {
         real_content = real_content + "\n" + content[i];
     }
-    std::cout << real_content << std::endl;
+    std::cout << real_content;
+    std::cout.flush();
 }
 
 void Screen::init_map(Map map)
