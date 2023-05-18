@@ -9,7 +9,9 @@
 #else
 #include <dirent.h>
 #endif
+
 Screen screen;
+
 std::vector<std::string> list_txt(std::string folder_name)
 {
 #ifdef _WIN32
@@ -30,7 +32,7 @@ std::vector<std::string> list_txt(std::string folder_name)
         } while (::FindNextFile(hFind, &fd));
         ::FindClose(hFind);
     }
- 
+
 #else
 
     DIR *dr;
@@ -46,7 +48,6 @@ std::vector<std::string> list_txt(std::string folder_name)
             {
                 names.push_back(filename);
             }
-            
         }
         closedir(dr); // close all directory
     }
@@ -85,9 +86,19 @@ void select_map()
                 break;
             }
         }
-
         screen.play_map(map_names[answer]);
     }
+}
+
+std::string bool_to_string(bool bool_value){
+    if (bool_value)
+    {
+        return "True";
+    }
+    else{
+        return "False";
+    }
+    
 }
 
 void setting_theme()
@@ -98,18 +109,19 @@ void setting_theme()
             "Setting for Sokoban",
             "Press up/down or w/s to change selection. Press space or enter to select the one you want to change.",
             "Please pick an option.");
-        screen.add_option("show border: ");
-        screen.add_option("max map number");
+            
+        screen.add_option("show border: " + bool_to_string(screen.show_border));
+        screen.add_option("align: " + screen.align);
+        screen.add_option("cancel");
 
-        screen.add_option("align: ");
         int answer = screen.wait_select();
         switch (answer)
         {
         case 0:
-            select_map();
+            screen.toggle_show_border();
             break;
         case 1:
-
+            screen.toggle_align();
             break;
         case 2:
             return;

@@ -40,12 +40,14 @@ Screen::Screen()
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     this->screen_column = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     this->screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    this->show_border = false;
 #else
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
     this->screen_row = w.ws_row;
     this->screen_column = w.ws_col;
+    this->show_border = true;
 #endif
     this->max_width = std::min(81, this->screen_column / 3 * 3);
     this->align = "left";
@@ -328,7 +330,7 @@ void Screen::print_base()
     int margin_x = std::max((this->screen_column - this->max_width) / 2, 0);
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::string content = "";
-    if (Config::show_border)
+    if (this->show_border)
     {
         for (int i = 0; i < margin_y - 1; i++)
         {
@@ -601,4 +603,17 @@ int Screen::play_map(std::string map_name)
             return 1;
         }
     }
+}
+
+void Screen::toggle_align(){
+    if (this->align == "center")
+    {
+        this->set_align("left");
+    }
+    else{
+        this->set_align("center");
+    }
+}
+void Screen::toggle_show_border(){
+    this->show_border = !this->show_border;
 }

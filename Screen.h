@@ -42,8 +42,14 @@ private:
     // user config
     std::string align;
     bool clear_screen_before_render;
-    
+    bool show_border;
 
+// user config
+    void set_align(std::string);
+    void set_mode(std::string); // set rendering mode
+
+    void toggle_align();
+    void toggle_show_border();
 public:
     Screen();
 
@@ -62,8 +68,7 @@ public:
     void init_map(Map);
     int play_map(std::string); // return score
 
-    // user config
-    void set_align(std::string);
-    void set_mode(std::string); // set rendering mode
+    
+    friend void setting_theme();
     
 };
