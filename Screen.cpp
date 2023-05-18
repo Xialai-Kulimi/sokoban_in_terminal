@@ -481,7 +481,7 @@ void Screen::render_map(bool debug)
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
-    this->add_base("> Press \"ESC\" to pause, press \"r\" to restart.");
+    this->add_base("> Press \"ESC\" to quit, press \"r\" to restart.");
     // put player stat into base
     this->add_base("move count: " + std::to_string(this->move_count));
     
