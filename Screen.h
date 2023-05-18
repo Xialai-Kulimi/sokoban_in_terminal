@@ -60,7 +60,7 @@ public:
 
     // display map
     void init_map(Map);
-    int play_map();  // return score
+    int play_map(int);  // return score
     
     // user config
     void set_align(std::string);

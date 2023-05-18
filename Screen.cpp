@@ -419,7 +419,7 @@ void Screen::render_map()
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
-    this->add_base("> Press \"ESC\" to pause, press \"z\" to undo.");
+    this->add_base("> Press \"ESC\" to pause, press \"z\" to undo, press \"r\" to restart.");
     this->add_base("move count: " + std::to_string(this->move_count));
 
     // put player stat into base
@@ -568,8 +568,9 @@ std::vector<int> Screen::get_arrow(std::string recv_key)
     return recv_vector;
 }
 
-int Screen::play_map()
+int Screen::play_map(int map_number)
 {
+    this->init_map(Map(map_number));
     this->move_count = 0;
     while (1)
     {
@@ -584,6 +585,10 @@ int Screen::play_map()
         else if (recv_key == "z")
         {
             // undo
+        }
+        else if (recv_key == "r")
+        {
+            return this->play_map(map_number);
         }
 
         std::vector<int> recv_vector = this->get_arrow(recv_key);

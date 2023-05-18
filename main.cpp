@@ -6,13 +6,10 @@
 
 Screen screen;
 
-void test_map();
-
 void select_map()
 {
     while (1)
     {
-
         screen.init_menu(
             "Select the map",
             "Press up/down or w/s to change selection. Press space or enter to confirm.",
@@ -35,24 +32,14 @@ void select_map()
                 break;
             }
         }
-        Map map(answer + 1);
-
-        screen.init_map(map);
-        screen.play_map();
+    
+        screen.play_map(answer + 1);
     }
 }
 
-void test_map()
+void setting_theme()
 {
-    Map map(3);
-
-    screen.init_map(map);
-    screen.render();
-    screen.init_map(Map(4));
-    screen.render();
-    std::vector<int> p_pos = map.find_player_pos();
-    printf("p_row: %d, p_col: %d\n", p_pos[0], p_pos[1]);
-    screen.play_map();
+    
 }
 
 int main()
@@ -77,7 +64,7 @@ int main()
             select_map();
             break;
         case 1:
-            test_map();
+            setting_theme();
             break;
         case 2:
             return 0;
