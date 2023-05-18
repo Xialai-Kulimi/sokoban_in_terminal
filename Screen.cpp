@@ -637,12 +637,16 @@ std::vector<int> Screen::get_arrow(std::string recv_key)
     return recv_vector;
 }
 
-void Screen::send_popup(std::string popup_message)
+void Screen::send_popup(std::string popup_message, bool wait)
 {
     this->popup = true;
     this->popup_string = " [ " + popup_message + " ] ";
     this->render();
-    this->get_key();
+    if (wait)
+    {
+        this->get_key();
+    }
+    
 }
 
 int Screen::play_map(std::string map_name)

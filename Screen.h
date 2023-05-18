@@ -54,7 +54,6 @@ private:
     bool popup;
     std::string popup_string;
 
-    void send_popup(std::string);
 
 public:
     Screen();
@@ -75,4 +74,6 @@ public:
     int play_map(std::string); // return score
 
     friend void setting_theme();
+
+    void send_popup(std::string, bool wait=false);
 };
