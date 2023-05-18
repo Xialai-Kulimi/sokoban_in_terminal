@@ -51,7 +51,7 @@ Screen::Screen()
     this->align = "left";
     this->mode = "menu";
     this->load_block_texture();
-    this->clear_screen_before_render = false;
+    this->clear_screen_before_render = true;
 }
 
 void Screen::fill(std::string texture)
