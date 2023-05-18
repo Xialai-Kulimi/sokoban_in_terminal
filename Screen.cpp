@@ -431,7 +431,7 @@ void Screen::print_base()
     {
         real_content = real_content + "\n" + content[i];
     }
-    std::cout << real_content;
+    std::cout << real_content << std::endl;
 }
 
 void Screen::init_map(Map map)
@@ -440,10 +440,13 @@ void Screen::init_map(Map map)
     this->set_mode("map");
     this->map_row = map.get_row();
     this->map_column = map.get_column();
+    this->map_row = map.get_row();
+
     this->camera_column = 0;
     this->camera_row = 0;
+
     this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
-    this->max_block_row = std::min(this->map.get_row(), this->max_block_column);
+    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_block_column), this->screen_row - 5);
 }
 
 void Screen::add_blockmap_to_base()
