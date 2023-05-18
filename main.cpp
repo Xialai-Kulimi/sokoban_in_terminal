@@ -3,6 +3,7 @@
 #include "Map.h"
 #include <iostream>
 #include <algorithm>
+#include <locale>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -134,6 +135,7 @@ void setting_theme()
 
 int main()
 {
+    std::locale l("");  // to make windows print border
     std::ios::sync_with_stdio(false);
 
     while (1)
