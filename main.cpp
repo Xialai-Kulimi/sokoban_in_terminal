@@ -76,7 +76,7 @@ void select_map()
         screen.add_option("cancel");
 
         int answer = screen.wait_select();
-        if (answer == (int)map_names.size())
+        if (answer == (int)map_names.size() || answer == -1)
         {
             return;
         }
@@ -128,6 +128,7 @@ void setting_theme()
             screen.frame_rate = (screen.frame_rate / 10 % 6 + 1) * 10 ;
             break;
         case 3:
+        case -1:
             return;
             break;
 
@@ -162,6 +163,7 @@ int main()
             setting_theme();
             break;
         case 2:
+        case -1:
             return 0;
             break;
 

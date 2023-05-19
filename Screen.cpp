@@ -704,6 +704,11 @@ int Screen::wait_select(bool reset)
         {
             return this->mark_pos;
         }
+        else if (recv_key == "esc")
+        {
+            return -1;
+        }
+        
         this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
     }
 }
