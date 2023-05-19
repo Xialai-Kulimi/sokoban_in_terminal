@@ -25,6 +25,7 @@ private:
 
     int mark_pos;
     int max_width;
+    int default_max_width;
     int max_height;
 
     std::string to_center(std::string);
@@ -60,6 +61,8 @@ private:
     void hide_cursor();
     void show_cursor();
 
+    void mod_mark_pos();
+
 public:
     Screen();
     ~Screen();
@@ -73,7 +76,7 @@ public:
     std::string get_key(bool debug = false);
 
     // display menu
-    void init_menu(std::string, std::string, std::string);
+    void init_menu(std::string, std::string, std::string, bool clear = true);
     void add_option(std::string);
     int wait_select(bool reset = true);
 
@@ -81,9 +84,12 @@ public:
     void init_map(Map);
     int play_map(std::string); // return score
 
-    friend void setting_theme();
 
     void send_popup(std::string, bool wait=true);
 
+    friend void setting_theme();
+    friend void set_setting_theme(int);
     friend void select_map();
+    friend void setting_frame_rate();
+    friend void setting_max_width();
 };

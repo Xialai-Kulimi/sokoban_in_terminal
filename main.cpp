@@ -106,35 +106,66 @@ void setting_theme()
     screen.mark_pos = 0;
     while (1)
     {
+        std::string hint_message = "Press enter or space to flip the value.";
+        if (screen.mark_pos == 2 || screen.mark_pos == 3)
+        {
+            hint_message = "Press left/right or a/d to adjust the value.";
+        }
+
         screen.init_menu(
             "Setting for Sokoban",
             "Press up/down or w/s to change selection. Press space or enter to select the one you want to change.",
-            "Please pick an option.");
+            hint_message, false);
 
         screen.add_option("show border: " + bool_to_string(screen.show_border));
         screen.add_option("align: " + screen.align);
         screen.add_option("frame rate: " + std::to_string(screen.frame_rate));
+        screen.add_option("max width: " + std::to_string(screen.default_max_width) + " (current: " + std::to_string(screen.max_width) + ")");
         screen.add_option("cancel");
 
-        int answer = screen.wait_select(false);
-        switch (answer)
+        // int answer = screen.wait_select(false);
+        // int answer = screen.mark_pos;
+        std::string recv_string = screen.get_key();
+        if (recv_string == "esc")
         {
-        case 0:
-            screen.toggle_show_border();
-            break;
-        case 1:
-            screen.toggle_align();
-            break;
-        case 2:
-            screen.frame_rate = (screen.frame_rate / 10 % 6 + 1) * 10 ;
-            break;
-        case 3:
-        case -1:
             return;
-            break;
+        }
 
-        default:
-            break;
+        std::vector<int> control_vector = screen.get_arrow(recv_string);
+        if (control_vector[0] != 0)
+        {
+            screen.mark_pos += control_vector[0];
+            screen.mod_mark_pos();
+        }
+        else
+        {
+            switch (screen.mark_pos)
+            {
+            case 0:
+                screen.toggle_show_border();
+                break;
+            case 1:
+                screen.toggle_align();
+                break;
+            case 2:
+                screen.frame_rate = ((screen.frame_rate / 10) + control_vector[1]) * 10;
+                screen.frame_rate = (screen.frame_rate + 50) % 60 + 10;
+
+                break;
+            case 3:
+                screen.default_max_width = std::max(75, screen.default_max_width + control_vector[1] * 6);
+                screen.set_size();
+                break;
+            case 4:
+                if (control_vector[1] == 0)
+                {
+                    return;
+                }
+                break;
+
+            default:
+                break;
+            }
         }
     }
 }
