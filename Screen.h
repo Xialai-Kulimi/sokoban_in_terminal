@@ -47,6 +47,7 @@ private:
     // user config
     void set_align(std::string);
     void set_mode(std::string); // set rendering mode
+    int render_rate;
 
     void toggle_align();
     void toggle_show_border();

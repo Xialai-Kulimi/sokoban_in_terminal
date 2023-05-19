@@ -21,8 +21,9 @@
 #include <termios.h>
 #endif
 
-void Screen::slow_clear(){
-    #ifdef _WIN32
+void Screen::slow_clear()
+{
+#ifdef _WIN32
     system("cls");
 #else
     system("clear");
@@ -32,7 +33,7 @@ void Screen::slow_clear(){
 void Screen::clear()
 {
     // try to reset cursor to 0, 0
-#ifdef _WIN32 
+#ifdef _WIN32
     HANDLE hStdOut;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     COORD homeCoords = {0, 0};
@@ -43,7 +44,7 @@ void Screen::clear()
 
     if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
         return this->slow_clear();
-    
+
     SetConsoleCursorPosition(hStdOut, homeCoords);
 #else
     return this->slow_clear();
@@ -54,6 +55,8 @@ Screen::Screen()
 {
 #ifdef _WIN32
     this->show_border = false;
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    FlushConsoleInputBuffer(handle);
 #else
     this->show_border = true;
 #endif
@@ -62,6 +65,7 @@ Screen::Screen()
     this->load_block_texture();
     this->clear_screen_before_render = true;
     this->set_size();
+    this->render_rate = 30;
 }
 
 void Screen::set_size()
@@ -105,53 +109,44 @@ void Screen::fill(std::string texture)
 std::string Screen::get_key(bool debug)
 {
 #ifdef _WIN32
-    int recv_key = _getch();
-    if (debug)
+    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    DWORD events;
+    INPUT_RECORD buffer;
+    while (1)
     {
-        std::cout << "recv: " << recv_key << "\n";
-    }
-
-    // force exit (ctrl+c)
-    if (recv_key == 3)
-    {
-        exit(0);
-    }
-
-    if (recv_key == 0 || recv_key == 224) // When reading a function key or an arrow key, each function must be called twice; the first call returns 0 or 0xE0
-    {
-        // the arrow key was pressed
-
-        recv_key = _getch();
-        if (debug)
+        PeekConsoleInput(handle, &buffer, 16, &events);
+        if (events > 0)
         {
-            std::cout << "recv: " << recv_key << "\n";
-        }
-        switch (recv_key)
-        {
+            // for (int i = 0; i < events; i++)
+            // {
+            ReadConsoleInput(handle, &buffer, 16, &events);
+            // }
 
-        case 72:
-            return "up";
-        case 80:
-            return "down";
-        case 75:
-            return "left";
-        case 77:
-            return "right";
+            switch (buffer.Event.KeyEvent.wVirtualKeyCode)
+            {
+            case VK_DOWN:
+                return "down";
+            case VK_LEFT:
+                return "left";
+            case VK_RIGHT:
+                return "right";
+            case VK_UP:
+                return "up";
+            case VK_RETURN:
+                return "enter";
+            case VK_ESCAPE:
+                return "esc";
+            case VK_SPACE:
+                return "space";
+            default:
+                return std::string(1, (char)buffer.Event.KeyEvent.uChar.AsciiChar); // can read wasd, enter, sapce, esc
+            }
         }
-    }
-    else
-    {
-        switch (recv_key)
+        else
         {
-        case 13:
-            return "enter";
-        case 32:
-            return "space";
-        case 27:
-            return "esc";
+            this->render();
+            this->wait(1.0 / (double)this->render_rate);
         }
-
-        return std::string(1, (char)recv_key);
     }
 
 #else
@@ -168,7 +163,7 @@ std::string Screen::get_key(bool debug)
         struct timeval tv;
 
         tv.tv_sec = 0;
-        tv.tv_usec = 100000;
+        tv.tv_usec = 1000000 / this->render_rate;
 
         FD_ZERO(&set);
         FD_SET(fileno(stdin), &set);
@@ -390,7 +385,6 @@ void Screen::print_base()
                 }
             }
         }
-        
     }
 
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 - 1, 2);
