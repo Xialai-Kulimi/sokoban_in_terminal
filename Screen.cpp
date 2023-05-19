@@ -295,6 +295,7 @@ void Screen::init_menu(
     std::string new_question)
 {
     this->slow_clear();
+    this->set_mode("menu");
     this->title = new_title;
     this->description = new_description;
     this->question = new_question;
@@ -527,7 +528,7 @@ void Screen::render_map(bool debug)
 {
     // recalculate block map size, for auto resize
     this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
-    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_width / 3), this->screen_row - 5);
+    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_width / 3), std::max(this->screen_row - 7, 0));
 
     // calculate camera position
     std::vector<int> player_pos = this->map.find_player_pos();

@@ -81,4 +81,6 @@ public:
     friend void setting_theme();
 
     void send_popup(std::string, bool wait=true);
+
+    friend void select_map();
 };
