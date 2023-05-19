@@ -64,6 +64,8 @@ public:
     void test();
     void render();
     void clear();
+    void slow_clear();
+    
     std::string get_key(bool debug = false);
 
     // display menu

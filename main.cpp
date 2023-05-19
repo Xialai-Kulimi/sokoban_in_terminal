@@ -135,7 +135,8 @@ void setting_theme()
 
 int main()
 {
-    std::locale l("");  // to make windows print border
+    screen.slow_clear();
+    std::locale l("");
     std::ios::sync_with_stdio(false);
 
     while (1)

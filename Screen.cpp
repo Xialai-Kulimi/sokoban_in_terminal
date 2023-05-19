@@ -9,7 +9,6 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#include <conio.h>
 #else
 // Assume POSIX
 #include <sys/ioctl.h>
@@ -22,12 +21,32 @@
 #include <termios.h>
 #endif
 
-void Screen::clear()
-{
-#ifdef _WIN32
+void Screen::slow_clear(){
+    #ifdef _WIN32
     system("cls");
 #else
     system("clear");
+#endif
+}
+
+void Screen::clear()
+{
+    // try to reset cursor to 0, 0
+#ifdef _WIN32 
+    HANDLE hStdOut;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    COORD homeCoords = {0, 0};
+
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hStdOut == INVALID_HANDLE_VALUE)
+        return this->slow_clear();
+
+    if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
+        return this->slow_clear();
+    
+    SetConsoleCursorPosition(hStdOut, homeCoords);
+#else
+    return this->slow_clear();
 #endif
 }
 
