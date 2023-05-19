@@ -60,7 +60,7 @@ void Screen::reset_cursor()
     // }
     SetConsoleCursorPosition(hStdOut, homeCoords);
 #else
-    std::cout << "\033[0;0H";  // use ansi to reset cursor
+    std::cout << "\033[0;0H"; // use ansi to reset cursor
 #endif
 }
 
@@ -79,7 +79,7 @@ Screen::Screen()
     this->clear_screen_before_render = true;
     this->set_size();
     this->frame_rate = 10;
-
+    this->default_max_width = 81;
     this->hide_cursor();
 }
 Screen::~Screen()
@@ -140,7 +140,7 @@ void Screen::set_size()
     }
 
 #endif
-    this->max_width = std::min(81, (this->screen_column - 4) / 3 * 3);
+    this->max_width = std::min(this->default_max_width, (this->screen_column - 4) / 3 * 3);
     this->max_height = std::max(5, (this->screen_row - 4));
 }
 
@@ -334,9 +334,13 @@ void Screen::wait(float sec)
 void Screen::init_menu(
     std::string new_title,
     std::string new_description,
-    std::string new_question)
+    std::string new_question,
+    bool clear)
 {
-    this->clear();
+    if (clear)
+    {
+        this->clear();
+    }
     this->set_mode("menu");
     this->title = new_title;
     this->description = new_description;
@@ -674,6 +678,11 @@ void Screen::set_mode(std::string new_rendering_mode)
     }
 }
 
+void Screen::mod_mark_pos()
+{
+    this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
+}
+
 int Screen::wait_select(bool reset)
 {
     if (reset)
@@ -708,8 +717,7 @@ int Screen::wait_select(bool reset)
         {
             return -1;
         }
-
-        this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
+        this->mod_mark_pos();
     }
 }
 
