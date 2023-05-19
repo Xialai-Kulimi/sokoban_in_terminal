@@ -112,6 +112,7 @@ void setting_theme()
 
         screen.add_option("show border: " + bool_to_string(screen.show_border));
         screen.add_option("align: " + screen.align);
+        screen.add_option("frame rate: " + std::to_string(screen.frame_rate));
         screen.add_option("cancel");
 
         int answer = screen.wait_select(false);
@@ -124,6 +125,9 @@ void setting_theme()
             screen.toggle_align();
             break;
         case 2:
+            screen.frame_rate = (screen.frame_rate / 10 % 6 + 1) * 10 ;
+            break;
+        case 3:
             return;
             break;
 

@@ -78,7 +78,7 @@ Screen::Screen()
     this->load_block_texture();
     this->clear_screen_before_render = true;
     this->set_size();
-    this->frame_rate = 30;
+    this->frame_rate = 10;
 
     this->hide_cursor();
 }
