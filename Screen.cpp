@@ -78,7 +78,7 @@ Screen::Screen()
     this->load_block_texture();
     this->clear_screen_before_render = true;
     this->set_size();
-    this->render_rate = 30;
+    this->frame_rate = 30;
 
     this->hide_cursor();
 }
@@ -222,7 +222,7 @@ std::string Screen::get_key(bool debug)
         else
         {
             this->render();
-            this->wait(1.0 / (double)this->render_rate);
+            this->wait(1.0 / (double)this->frame_rate);
         }
     }
 
@@ -240,7 +240,7 @@ std::string Screen::get_key(bool debug)
         struct timeval tv;
 
         tv.tv_sec = 0;
-        tv.tv_usec = 1000000 / this->render_rate;
+        tv.tv_usec = 1000000 / this->frame_rate;
 
         FD_ZERO(&set);
         FD_SET(fileno(stdin), &set);
