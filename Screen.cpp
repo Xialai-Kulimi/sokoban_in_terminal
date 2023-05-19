@@ -406,28 +406,36 @@ void Screen::render_menu()
     int start_point = std::max(this->mark_pos - left_space / 2, 0);
     start_point = std::min(start_point, std::max(visible_option_len - left_space / 2 - 1, 0));
 
-    for (int i = start_point; i < std::min(visible_option_len + start_point, option_len); i++)
+    int end_point = std::min(visible_option_len + start_point, option_len);
+
+    for (int i = start_point; i < end_point; i++)
     {
+        std::string print_message = this->options[i];
+        if ((i == start_point && i != 0) || (i == end_point - 1 && i != option_len - 1))
+        {
+            print_message = "...";
+        }
+
         if (render_center)
         {
             if (i == this->mark_pos)
             {
-                this->add_base("> " + this->options[i] + " <", true);
+                this->add_base("> " + print_message + " <", true);
             }
             else
             {
-                this->add_base(this->options[i], true);
+                this->add_base(print_message, true);
             }
         }
         else
         {
             if (i == this->mark_pos)
             {
-                this->add_base("> " + this->options[i]);
+                this->add_base("> " + print_message);
             }
             else
             {
-                this->add_base("  " + this->options[i]);
+                this->add_base("  " + print_message);
             }
         }
     }
