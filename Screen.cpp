@@ -9,6 +9,7 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#include <conio.h>
 #else
 // Assume POSIX
 #include <sys/ioctl.h>
@@ -23,6 +24,7 @@
 
 void Screen::slow_clear()
 {
+    // fill it with blank
 #ifdef _WIN32
     system("cls");
 #else
@@ -36,6 +38,8 @@ void Screen::clear()
 #ifdef _WIN32
     HANDLE hStdOut;
     CONSOLE_SCREEN_BUFFER_INFO csbi;
+    // DWORD count;
+    // DWORD cellCount;
     COORD homeCoords = {0, 0};
 
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -45,6 +49,15 @@ void Screen::clear()
     if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
         return this->slow_clear();
 
+    // cellCount = csbi.dwSize.X * csbi.dwSize.Y;
+    // if (!FillConsoleOutputCharacter(hStdOut, (TCHAR)' ', cellCount, homeCoords, &count))
+    // {
+    //     return this->slow_clear();
+    // }
+    // if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount, homeCoords, &count))
+    // {
+    //     return this->slow_clear();
+    // }
     SetConsoleCursorPosition(hStdOut, homeCoords);
 #else
     return this->slow_clear();
@@ -109,37 +122,59 @@ void Screen::fill(std::string texture)
 std::string Screen::get_key(bool debug)
 {
 #ifdef _WIN32
-    HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
-    DWORD events;
-    INPUT_RECORD buffer;
+
     while (1)
     {
-        PeekConsoleInput(handle, &buffer, 16, &events);
-        if (events > 0)
-        {
-            // for (int i = 0; i < events; i++)
-            // {
-            ReadConsoleInput(handle, &buffer, 16, &events);
-            // }
 
-            switch (buffer.Event.KeyEvent.wVirtualKeyCode)
+        if (_kbhit())
+        {
+            int recv_key = _getch();
+            if (debug)
             {
-            case VK_DOWN:
-                return "down";
-            case VK_LEFT:
-                return "left";
-            case VK_RIGHT:
-                return "right";
-            case VK_UP:
-                return "up";
-            case VK_RETURN:
-                return "enter";
-            case VK_ESCAPE:
-                return "esc";
-            case VK_SPACE:
-                return "space";
-            default:
-                return std::string(1, (char)buffer.Event.KeyEvent.uChar.AsciiChar); // can read wasd, enter, sapce, esc
+                std::cout << "recv: " << recv_key << "\n";
+            }
+
+            // force exit (ctrl+c)
+            if (recv_key == 3)
+            {
+                exit(0);
+            }
+
+            if (recv_key == 0 || recv_key == 224) // When reading a function key or an arrow key, each function must be called twice; the first call returns 0 or 0xE0
+            {
+                // the arrow key was pressed
+
+                recv_key = _getch();
+                if (debug)
+                {
+                    std::cout << "recv: " << recv_key << "\n";
+                }
+                switch (recv_key)
+                {
+
+                case 72:
+                    return "up";
+                case 80:
+                    return "down";
+                case 75:
+                    return "left";
+                case 77:
+                    return "right";
+                }
+            }
+            else
+            {
+                switch (recv_key)
+                {
+                case 13:
+                    return "enter";
+                case 32:
+                    return "space";
+                case 27:
+                    return "esc";
+                }
+
+                return std::string(1, (char)recv_key);
             }
         }
         else
@@ -259,6 +294,7 @@ void Screen::init_menu(
     std::string new_description,
     std::string new_question)
 {
+    this->slow_clear();
     this->title = new_title;
     this->description = new_description;
     this->question = new_question;
@@ -461,6 +497,7 @@ void Screen::print_base()
 
 void Screen::init_map(Map map)
 {
+    this->slow_clear();
     this->map = map;
     this->set_mode("map");
     this->map_row = map.get_row();
