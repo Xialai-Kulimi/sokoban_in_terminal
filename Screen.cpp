@@ -616,7 +616,7 @@ void Screen::render()
     this->set_size();
     if (this->clear_screen_before_render)
     {
-        this->clear();ga
+        this->clear();
     }
     // std::vector<std::string> content;
     if (this->mode == "menu")
