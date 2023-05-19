@@ -115,20 +115,29 @@ void Screen::show_cursor()
 
 void Screen::set_size()
 {
+
 #ifdef _WIN32
 
     CONSOLE_SCREEN_BUFFER_INFO csbi;
 
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    this->screen_column = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    this->screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-
+    int new_screen_column = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    int new_screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    if (this->screen_row != new_screen_row || this->screen_column != new_screen_column)
+    {
+        this->screen_column = new_screen_column;
+        this->screen_row = new_screen_row;
+        this->slow_clear();
+    }
 #else
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
-    this->screen_row = w.ws_row;
-    this->screen_column = w.ws_col;
+    if (this->screen_row != w.ws_row || this->screen_column != w.ws_col)
+    {
+        this->screen_row = w.ws_row;
+        this->screen_column = w.ws_col;
+        this->slow_clear();
+    }
 
 #endif
     this->max_width = std::min(81, (this->screen_column - 4) / 3 * 3);
@@ -603,10 +612,11 @@ void Screen::render_map(bool debug)
 
 void Screen::render()
 {
+
     this->set_size();
     if (this->clear_screen_before_render)
     {
-        this->clear();
+        this->clear();ga
     }
     // std::vector<std::string> content;
     if (this->mode == "menu")
