@@ -141,6 +141,7 @@ void Screen::set_size()
 
 #endif
     this->max_width = std::min(81, (this->screen_column - 4) / 3 * 3);
+    this->max_height = std::max(5, (this->screen_row - 4));
 }
 
 void Screen::fill(std::string texture)
@@ -397,7 +398,15 @@ void Screen::render_menu()
     this->add_base("");
     this->add_base("[ " + this->question + " ]", render_center);
     this->add_base("");
-    for (int i = 0; i < (int)this->options.size(); i++)
+
+    int left_space = std::max(this->max_height - (int)this->base_output.size(), 0);
+    // assume all options can render in one line
+    int option_len = (int)this->options.size();
+    int visible_option_len = std::min(option_len, left_space);
+    int start_point = std::max(this->mark_pos - left_space / 2, 0);
+    start_point = std::min(start_point, std::max(visible_option_len - left_space / 2 - 1, 0));
+
+    for (int i = start_point; i < std::min(visible_option_len + start_point, option_len); i++)
     {
         if (render_center)
         {
@@ -428,10 +437,9 @@ void Screen::render_menu()
 
 void Screen::print_base()
 {
-
+    // cover base with popup
     if (this->popup)
     {
-        // add popup to base
         int base_row = (int)this->base_output.size();
         for (int i = 0; i < base_row; i++)
         {
@@ -471,11 +479,11 @@ void Screen::print_base()
     // printf("scr_w: %d, max_w: %d,margin_x: %d\n", this->screen_column, this->max_width, margin_x);
     std::vector<std::string> content;
 
+    // print upper margin
     for (int i = 0; i < margin_y - 1; i++)
     {
         content.push_back(std::string(this->screen_column, ' '));
     }
-
     if (this->show_border)
     {
         std::string this_line = std::string(margin_x - 1, ' ') + "┏";
@@ -490,9 +498,9 @@ void Screen::print_base()
     {
         content.push_back(std::string(this->screen_column, ' '));
     }
+
     if (this->show_border)
     {
-
         for (int i = 0; i < (int)this->base_output.size(); i++)
         {
             content.push_back(std::string(margin_x - 1, ' ') + "┃" + this->base_output[i] + std::string(screen_column - (margin_x * 2) - this->base_output[i].length(), ' ') + "┃" + std::string(margin_x - 1, ' '));
@@ -788,6 +796,7 @@ int Screen::play_map(std::string map_name)
         }
         else if (recv_key == "r")
         {
+            this->send_popup("Restart.");
             return this->play_map(map_name);
         }
 

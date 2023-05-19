@@ -25,6 +25,7 @@ private:
 
     int mark_pos;
     int max_width;
+    int max_height;
 
     std::string to_center(std::string);
     std::vector<std::string> base_output;
