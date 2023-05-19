@@ -60,7 +60,7 @@ void Screen::reset_cursor()
     // }
     SetConsoleCursorPosition(hStdOut, homeCoords);
 #else
-    return this->clear();
+    std::cout << "\033[0;0H";  // use ansi to reset cursor
 #endif
 }
 
