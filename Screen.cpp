@@ -98,7 +98,7 @@ std::string Screen::get_key(bool debug)
         exit(0);
     }
 
-    if (recv_key == 0 || recv_key == 224)
+    if (recv_key == 0 || recv_key == 224) // When reading a function key or an arrow key, each function must be called twice; the first call returns 0 or 0xE0
     {
         // the arrow key was pressed
 
@@ -477,14 +477,31 @@ void Screen::render_map(bool debug)
 {
     // recalculate block map size, for auto resize
     this->max_block_column = std::min(this->map.get_column(), this->max_width / 3);
-    this->max_block_row = std::min(std::min(this->map.get_row(), this->max_block_column), this->screen_row - 5);
+    this->max_block_row = std::min(this->map.get_row(), this->screen_row - 5);
+
+    // calculate camera position
+    std::vector<int> player_pos = this->map.find_player_pos();
+
+    this->camera_row = std::max(player_pos[0] - this->max_block_row / 2, 0);
+    this->camera_column = std::max(player_pos[1] - this->max_block_column / 2, 0);
+
+    this->camera_row = std::min(this->camera_row, std::max(this->map_row - this->max_block_row, 0));
+    this->camera_column = std::min(this->camera_column, std::max(this->map_column - this->max_block_column, 0));
+    if (debug)
+    {
+        printf("max_block_row: %d, max_block_column: %d\n", this->max_block_row, this->max_block_column);
+        printf("player_row: %d, player_column: %d\n", player_pos[0], player_pos[1]);
+        printf("camera_row: %d, camera_column: %d\n", camera_row, camera_column);
+        this->get_key();
+    }
+
     // put map into base
     this->base_output.clear();
     this->add_blockmap_to_base();
     this->add_base("> Press \"ESC\" to quit, press \"r\" to restart.");
     // put player stat into base
     this->add_base("move count: " + std::to_string(this->move_count));
-    
+
     if (debug)
     {
         this->add_base("");
@@ -684,12 +701,6 @@ int Screen::play_map(std::string map_name)
 
         this->move_count++;
         this->map.player_move(recv_vector);
-        // find player pos
-        std::vector<int> player_pos = this->map.find_player_pos();
-        this->camera_row = std::max(player_pos[0] - this->max_block_row / 2, 0);
-        this->camera_column = std::max(player_pos[1] - this->max_block_column / 2, 0);
-        this->camera_row = std::min(this->camera_row, std::max(this->map_row - this->max_block_row, 0));
-        this->camera_column = std::min(this->camera_column, std::max(this->map_column - this->max_block_column, 0));
 
         if (this->map.check_win())
         {
