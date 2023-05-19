@@ -101,6 +101,25 @@ std::string bool_to_string(bool bool_value)
     }
 }
 
+std::string hightlight_when_equal(std::string input_string, int number_1, int number_2)
+{
+    if (number_1 == number_2)
+    {
+        if (number_1 == 0 || number_1 == 1)
+        {
+            return " *" + input_string + "* ";
+        }
+        else
+        {
+            return " <" + input_string + "> ";
+        }
+    }
+    else
+    {
+        return "  " + input_string + "  ";
+    }
+}
+
 void setting_theme()
 {
     screen.mark_pos = 0;
@@ -116,11 +135,11 @@ void setting_theme()
             "Setting for Sokoban",
             "Press up/down or w/s to change selection. Press space or enter to select the one you want to change.",
             hint_message, false);
-
-        screen.add_option("show border: " + bool_to_string(screen.show_border));
-        screen.add_option("align: " + screen.align);
-        screen.add_option("frame rate: " + std::to_string(screen.frame_rate));
-        screen.add_option("max width: " + std::to_string(screen.default_max_width) + " (current: " + std::to_string(screen.max_width) + ")");
+        int i = 0;
+        screen.add_option("show border:" + hightlight_when_equal(bool_to_string(screen.show_border), i++, screen.mark_pos));
+        screen.add_option("align:" + hightlight_when_equal(screen.align, i++, screen.mark_pos));
+        screen.add_option("frame rate:" + hightlight_when_equal(std::to_string(screen.frame_rate), i++, screen.mark_pos));
+        screen.add_option("max width:" + hightlight_when_equal(std::to_string(screen.default_max_width), i++, screen.mark_pos) + "(current: " + std::to_string(screen.max_width) + ")");
         screen.add_option("cancel");
 
         // int answer = screen.wait_select(false);
