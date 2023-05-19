@@ -122,7 +122,7 @@ void Screen::set_size()
 
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     int new_screen_column = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    int new_screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+    int new_screen_row = csbi.srWindow.Bottom - csbi.srWindow.Top;
     if (this->screen_row != new_screen_row || this->screen_column != new_screen_column)
     {
         this->screen_column = new_screen_column;
@@ -708,7 +708,7 @@ int Screen::wait_select(bool reset)
         {
             return -1;
         }
-        
+
         this->mark_pos = (this->mark_pos + (int)this->options.size()) % (int)this->options.size();
     }
 }
