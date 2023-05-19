@@ -56,10 +56,12 @@ private:
     std::string popup_string;
 
     void set_size();
-
+    void hide_cursor();
+    void show_cursor();
 
 public:
     Screen();
+    ~Screen();
 
     // for test
     void test();

@@ -79,6 +79,38 @@ Screen::Screen()
     this->clear_screen_before_render = true;
     this->set_size();
     this->render_rate = 30;
+
+    this->hide_cursor();
+}
+Screen::~Screen()
+{
+    this->show_cursor();
+}
+
+void Screen::hide_cursor()
+{
+#ifdef _WIN32
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 10;
+    info.bVisible = FALSE;
+    SetConsoleCursorInfo(consoleHandle, &info);
+#else
+    // assume all unix situation support ansi
+    printf("\033[?25l");
+#endif
+}
+void Screen::show_cursor()
+{
+#ifdef _WIN32
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 10;
+    info.bVisible = true;
+    SetConsoleCursorInfo(consoleHandle, &info);
+#else
+    printf("\033[?25h");
+#endif
 }
 
 void Screen::set_size()
