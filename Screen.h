@@ -67,7 +67,7 @@ public:
     void test();
     void render();
     void clear();
-    void slow_clear();
+    void reset_cursor();
     
     std::string get_key(bool debug = false);
 

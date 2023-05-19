@@ -74,7 +74,7 @@ void select_map()
             screen.add_option(map_names[i].substr(0, map_names[i].find_last_of(".")));
         }
         screen.add_option("cancel");
-        
+
         int answer = screen.wait_select();
         if (answer == (int)map_names.size())
         {
@@ -135,7 +135,7 @@ void setting_theme()
 
 int main()
 {
-    screen.slow_clear();
+    screen.clear();
     std::locale l("");
     std::ios::sync_with_stdio(false);
 

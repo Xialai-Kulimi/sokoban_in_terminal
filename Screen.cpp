@@ -22,7 +22,7 @@
 #include <termios.h>
 #endif
 
-void Screen::slow_clear()
+void Screen::clear()
 {
     // fill it with blank
 #ifdef _WIN32
@@ -32,7 +32,7 @@ void Screen::slow_clear()
 #endif
 }
 
-void Screen::clear()
+void Screen::reset_cursor()
 {
     // try to reset cursor to 0, 0
 #ifdef _WIN32
@@ -44,23 +44,23 @@ void Screen::clear()
 
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     if (hStdOut == INVALID_HANDLE_VALUE)
-        return this->slow_clear();
+        return this->clear();
 
     if (!GetConsoleScreenBufferInfo(hStdOut, &csbi))
-        return this->slow_clear();
+        return this->clear();
 
     // cellCount = csbi.dwSize.X * csbi.dwSize.Y;
     // if (!FillConsoleOutputCharacter(hStdOut, (TCHAR)' ', cellCount, homeCoords, &count))
     // {
-    //     return this->slow_clear();
+    //     return this->clear();
     // }
     // if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount, homeCoords, &count))
     // {
-    //     return this->slow_clear();
+    //     return this->clear();
     // }
     SetConsoleCursorPosition(hStdOut, homeCoords);
 #else
-    return this->slow_clear();
+    return this->clear();
 #endif
 }
 
@@ -127,7 +127,7 @@ void Screen::set_size()
     {
         this->screen_column = new_screen_column;
         this->screen_row = new_screen_row;
-        this->slow_clear();
+        this->clear();
     }
 #else
     struct winsize w;
@@ -136,7 +136,7 @@ void Screen::set_size()
     {
         this->screen_row = w.ws_row;
         this->screen_column = w.ws_col;
-        this->slow_clear();
+        this->clear();
     }
 
 #endif
@@ -335,7 +335,7 @@ void Screen::init_menu(
     std::string new_description,
     std::string new_question)
 {
-    this->slow_clear();
+    this->clear();
     this->set_mode("menu");
     this->title = new_title;
     this->description = new_description;
@@ -539,7 +539,7 @@ void Screen::print_base()
 
 void Screen::init_map(Map map)
 {
-    this->slow_clear();
+    this->clear();
     this->map = map;
     this->set_mode("map");
     this->map_row = map.get_row();
@@ -616,7 +616,7 @@ void Screen::render()
     this->set_size();
     if (this->clear_screen_before_render)
     {
-        this->clear();
+        this->reset_cursor();
     }
     // std::vector<std::string> content;
     if (this->mode == "menu")
