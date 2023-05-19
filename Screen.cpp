@@ -400,13 +400,16 @@ void Screen::render_menu()
     this->add_base("");
 
     int left_space = std::max(this->max_height - (int)this->base_output.size(), 0);
+
     // assume all options can render in one line
     int option_len = (int)this->options.size();
     int visible_option_len = std::min(option_len, left_space);
-    int start_point = std::max(this->mark_pos - left_space / 2, 0);
-    start_point = std::min(start_point, std::max(visible_option_len - left_space / 2 - 1, 0));
+    visible_option_len -= (visible_option_len + 1) % 2; // make it odd
 
-    int end_point = std::min(visible_option_len + start_point, option_len);
+    int start_point = std::max(this->mark_pos - visible_option_len / 2, 0);
+    start_point = std::min(start_point, std::max(option_len - visible_option_len, 0));
+
+    int end_point = visible_option_len + start_point;
 
     for (int i = start_point; i < end_point; i++)
     {
