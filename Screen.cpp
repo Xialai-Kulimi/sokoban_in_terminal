@@ -167,8 +167,8 @@ std::string Screen::get_key(bool debug)
         fd_set set;
         struct timeval tv;
 
-        tv.tv_sec = 10;
-        tv.tv_usec = 0;
+        tv.tv_sec = 0;
+        tv.tv_usec = 100000;
 
         FD_ZERO(&set);
         FD_SET(fileno(stdin), &set);
@@ -193,7 +193,7 @@ std::string Screen::get_key(bool debug)
         }
         else
         {
-            // printf("Select timeout\n");
+            this->render();
         }
     }
 
@@ -390,7 +390,7 @@ void Screen::print_base()
                 }
             }
         }
-        this->popup = false;
+        
     }
 
     int margin_y = std::max((this->screen_row - (int)this->base_output.size()) / 2 - 1, 2);
@@ -694,6 +694,7 @@ void Screen::send_popup(std::string popup_message, bool wait)
         this->wait(0.5);
         this->get_key();
     }
+    this->popup = false;
 }
 
 int Screen::play_map(std::string map_name)
