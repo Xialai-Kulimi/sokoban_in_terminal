@@ -161,10 +161,16 @@ void setting_theme()
             switch (screen.mark_pos)
             {
             case 0:
-                screen.toggle_show_border();
+                if (control_vector[1] == 0)
+                {
+                    screen.toggle_show_border();
+                }
                 break;
             case 1:
-                screen.toggle_align();
+                if (control_vector[1] == 0)
+                {
+                    screen.toggle_align();
+                }
                 break;
             case 2:
                 screen.frame_rate = ((screen.frame_rate / 10) + control_vector[1]) * 10;
