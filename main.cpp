@@ -60,6 +60,7 @@ std::vector<std::string> list_txt(std::string folder_name)
 
 void select_map()
 {
+    screen.mark_pos = 0;
     while (1)
     {
         screen.init_menu(
@@ -75,7 +76,7 @@ void select_map()
         }
         screen.add_option("cancel");
 
-        int answer = screen.wait_select();
+        int answer = screen.wait_select(false);
         if (answer == (int)map_names.size() || answer == -1)
         {
             return;
