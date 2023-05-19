@@ -98,7 +98,7 @@ std::string Screen::get_key(bool debug)
         exit(0);
     }
 
-    if (recv_key == 0)
+    if (recv_key == 0 || recv_key == 224)
     {
         // the arrow key was pressed
 
