@@ -175,14 +175,18 @@ Example map
 ## Maps
 地圖儲存在`/maps`裡面，應該要做成可以隨時重整將新的地圖放進去，我也要設計一些地圖放進去。
 
-## setting
+## .sokoban_profile
+including setting and play record.
 
-1. choose which value want to change.
-2. 
+```
+<map_name> <play_count> <step>
+```
 
-
-## config
-show border
-max map number
-align center
+```
+show_border 0
+align 0
+frame_rate 10
+max_width 81
+mission1.txt 1 1
+```
 

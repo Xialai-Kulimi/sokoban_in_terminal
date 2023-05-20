@@ -1,6 +1,7 @@
 #include "Screen.h"
 #include "Config.h"
 #include "Map.h"
+#include "Profile.h"
 #include <iostream>
 #include <algorithm>
 #include <locale>
@@ -11,6 +12,7 @@
 #include <dirent.h>
 #endif
 
+Profile profile;
 Screen screen;
 
 std::vector<std::string> list_txt(std::string folder_name)
