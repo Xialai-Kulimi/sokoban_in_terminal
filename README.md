@@ -184,9 +184,9 @@ including setting and play record.
 
 ```
 show_border 0
-align 0
+align_center 0
 frame_rate 10
-max_width 81
+default_max_width 81
 mission1.txt 1 1
 ```
 

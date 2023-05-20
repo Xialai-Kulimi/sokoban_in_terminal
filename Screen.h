@@ -64,6 +64,7 @@ private:
     void mod_mark_pos();
 
 public:
+    Screen(bool, bool, int, int);
     Screen();
     ~Screen();
 

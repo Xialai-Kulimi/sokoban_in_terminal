@@ -13,7 +13,11 @@
 #endif
 
 Profile profile;
-Screen screen;
+Screen screen(
+    (bool)profile.read_setting("show_border"),
+    (bool)profile.read_setting("align_center"),
+    profile.read_setting("frame_rate"),
+    profile.read_setting("default_max_width"));
 
 std::vector<std::string> list_txt(std::string folder_name)
 {

@@ -63,23 +63,23 @@ void Screen::reset_cursor()
     std::cout << "\033[0;0H"; // use ansi to reset cursor
 #endif
 }
-
-Screen::Screen()
+Screen::Screen(){};
+Screen::Screen(bool show_border, bool align_center, int frame_rate, int default_max_width)
 {
 #ifdef _WIN32
-    this->show_border = false;
+    this->show_border = show_border;
     HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
     FlushConsoleInputBuffer(handle);
 #else
-    this->show_border = true;
+    this->show_border = show_border;
 #endif
-    this->align = "left";
+    this->align = align_center ? "center" : "left";
     this->mode = "menu";
     this->load_block_texture();
     this->clear_screen_before_render = true;
     this->set_size();
-    this->frame_rate = 10;
-    this->default_max_width = 81;
+    this->frame_rate = frame_rate;
+    this->default_max_width = default_max_width;
     this->hide_cursor();
 }
 Screen::~Screen()
