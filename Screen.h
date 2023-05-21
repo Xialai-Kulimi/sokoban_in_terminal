@@ -5,7 +5,6 @@
 class Screen
 {
 private:
-    /* data */
     std::string mode;
     Map map;
     std::string title, description, question;

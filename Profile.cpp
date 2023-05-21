@@ -39,7 +39,7 @@ void Profile::load()
                 int value, step;
                 sscanf(readed_string.c_str(), "%s %d %d", key, &value, &step);
                 std::string string_key = key;
-                // std::cout << "read: " << key << " " << value << " " << step << "\n"; 
+                // std::cout << "read: " << key << " " << value << " " << step << "\n";
 
                 if (string_key.substr(string_key.find_last_of(".") + 1) == "txt")
                 {
@@ -54,16 +54,20 @@ void Profile::load()
                     // write setting to settig_map
                     this->setting_map[string_key] = value;
                 }
-                
             }
         }
         fin.close();
     }
     else
     {
-        // .sokoban_profile does not exist.
-        // generate default value and save.
+// .sokoban_profile does not exist.
+// generate default value and save.
+#ifdef _WIN32
         this->setting_map["show_border"] = 0;
+#else
+        // Assume POSIX
+        this->setting_map["show_border"] = 1;
+#endif
         this->setting_map["align_center"] = 0;
         this->setting_map["frame_rate"] = 10;
         this->setting_map["default_max_width"] = 81;
@@ -77,12 +81,11 @@ int Profile::read_setting(std::string key)
     {
         return this->setting_map[key];
     }
-    else {
+    else
+    {
         std::cerr << "\"" << key << "\" is not found in setting_map\n";
-        exit(1); 
+        exit(1);
     }
-    
-    
 }
 
 std::vector<int> Profile::read_play_record(std::string map_name)
