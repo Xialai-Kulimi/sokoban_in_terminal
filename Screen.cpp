@@ -833,7 +833,7 @@ int Screen::play_map(std::string map_name, int best_record)
         {
             if (best_record == 0 || this->move_count < best_record)
             {
-                this->send_popup("You break your record with " + std::to_string(this->move_count) + " steps!");
+                this->send_popup("You create new record with " + std::to_string(this->move_count) + " steps!");
             }
             else {
                 this->send_popup("You win with " + std::to_string(this->move_count) + " steps!");
