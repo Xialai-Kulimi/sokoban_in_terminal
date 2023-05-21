@@ -83,7 +83,7 @@ void select_map()
             if (play_record > 0)
             {
                 display_text = display_text + " (best record: ";
-                display_text = display_text + std::to_string(play_record) + " step)";
+                display_text = display_text + std::to_string(play_record) + " steps)";
             }
 
             screen.add_option(display_text);
@@ -98,7 +98,7 @@ void select_map()
         else if (0 <= answer && answer <= (int)map_names.size() - 1)
         {
             screen.send_popup("loading...", false);
-            int step = screen.play_map(map_names[answer]);
+            int step = screen.play_map(map_names[answer], profile.read_play_record(map_names[answer]));
             profile.update_record(map_names[answer], step);
         }
     }

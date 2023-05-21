@@ -803,7 +803,7 @@ void Screen::send_popup(std::string popup_message, bool wait)
     this->popup = false;
 }
 
-int Screen::play_map(std::string map_name)
+int Screen::play_map(std::string map_name, int best_record)
 {
     this->init_map(Map(map_name));
     this->move_count = 0;
@@ -821,7 +821,7 @@ int Screen::play_map(std::string map_name)
         else if (recv_key == "r")
         {
             this->send_popup("Restart.");
-            return this->play_map(map_name);
+            return this->play_map(map_name, best_record);
         }
 
         std::vector<int> recv_vector = this->get_arrow(recv_key);
@@ -831,7 +831,15 @@ int Screen::play_map(std::string map_name)
 
         if (this->map.check_win())
         {
-            this->send_popup("You win with " + std::to_string(this->move_count) + " steps!");
+            if (best_record == 0 || this->move_count < best_record)
+            {
+                this->send_popup("You break your record with " + std::to_string(this->move_count) + " steps!");
+            }
+            else {
+                this->send_popup("You win with " + std::to_string(this->move_count) + " steps!");
+            }
+            
+            
             return this->move_count;
         }
     }

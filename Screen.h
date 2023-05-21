@@ -82,14 +82,11 @@ public:
 
     // display map
     void init_map(Map);
-    int play_map(std::string); // return step
+    int play_map(std::string, int); // return step
 
 
     void send_popup(std::string, bool wait=true);
 
     friend void setting_theme();
-    friend void set_setting_theme(int);
     friend void select_map();
-    friend void setting_frame_rate();
-    friend void setting_max_width();
 };
