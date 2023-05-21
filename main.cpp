@@ -19,6 +19,15 @@ Screen screen(
     profile.read_setting("frame_rate"),
     profile.read_setting("default_max_width"));
 
+bool replace(std::string &str, const std::string &from, const std::string &to)
+{
+    size_t start_pos = str.find(from);
+    if (start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
+}
+
 std::vector<std::string> list_txt(std::string folder_name)
 {
 #ifdef _WIN32
@@ -79,6 +88,7 @@ void select_map()
         for (int i = 0; i < (int)map_names.size(); i++)
         {
             std::string display_text = map_names[i].substr(0, map_names[i].find_last_of("."));
+            replace(display_text, "_", " ");
             int play_record = profile.read_play_record(map_names[i]);
             if (play_record > 0)
             {
