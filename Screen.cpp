@@ -831,7 +831,7 @@ int Screen::play_map(std::string map_name)
 
         if (this->map.check_win())
         {
-            this->send_popup("You win!");
+            this->send_popup("You win with " + std::to_string(this->move_count) + " steps!");
             return this->move_count;
         }
     }

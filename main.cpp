@@ -79,11 +79,11 @@ void select_map()
         for (int i = 0; i < (int)map_names.size(); i++)
         {
             std::string display_text = map_names[i].substr(0, map_names[i].find_last_of("."));
-            std::vector<int> play_record = profile.read_play_record(map_names[i]);
-            if (play_record[1] > 0)
+            int play_record = profile.read_play_record(map_names[i]);
+            if (play_record > 0)
             {
-                display_text = display_text + " best record: ";
-                display_text = display_text + ((play_record[1] > 0) ? std::to_string(play_record[1]) : "NAN") + " step";
+                display_text = display_text + " (best record: ";
+                display_text = display_text + std::to_string(play_record) + " step)";
             }
 
             screen.add_option(display_text);

@@ -36,18 +36,15 @@ void Profile::load()
             else
             {
                 char key[100];
-                int value, step;
-                sscanf(readed_string.c_str(), "%s %d %d", key, &value, &step);
+                int value;
+                sscanf(readed_string.c_str(), "%s %d", key, &value);
                 std::string string_key = key;
                 // std::cout << "read: " << key << " " << value << " " << step << "\n";
 
                 if (string_key.substr(string_key.find_last_of(".") + 1) == "txt")
                 {
                     // write record to map_record
-                    std::vector<int> play_record;
-                    play_record.push_back(value);
-                    play_record.push_back(step);
-                    this->map_record[string_key] = play_record;
+                    this->map_record[string_key] = value;
                 }
                 else
                 {
@@ -88,16 +85,9 @@ int Profile::read_setting(std::string key)
     }
 }
 
-std::vector<int> Profile::read_play_record(std::string map_name)
+int Profile::read_play_record(std::string map_name)
 {
-    std::vector<int> play_record = this->map_record[map_name];
-    if (play_record.size() == 0)
-    {
-        play_record.push_back(0);
-        play_record.push_back(-1);
-    }
-    
-    return play_record;
+    return this->map_record[map_name];
 }
 
 void Profile::write_setting(std::string setting_key, int setting_value)
@@ -108,18 +98,15 @@ void Profile::write_setting(std::string setting_key, int setting_value)
 
 void Profile::update_record(std::string map_name, int step)
 {
-    std::vector<int> play_record = this->map_record[map_name];
-    if (play_record.size() == 0)
+
+    if (step > 0)
     {
-        play_record.push_back(0);
-        play_record.push_back(step);
+        if (step < this->map_record[map_name] || this->map_record[map_name] == 0)
+        {
+            this->map_record[map_name] = step;
+            this->save();
+        }
     }
-    play_record[0] = play_record[0] + 1;
-    if (step < play_record[1] && step > 0)
-    {
-        play_record[1] = step;
-    }
-    this->map_record[map_name] = play_record;
 }
 
 void Profile::save()
@@ -130,9 +117,9 @@ void Profile::save()
     {
         fout << it->first << " " << it->second << "\n";
     }
-    for (std::map<std::string, std::vector<int> >::iterator it = this->map_record.begin(); it != this->map_record.end(); ++it)
+    for (std::map<std::string, int>::iterator it = this->map_record.begin(); it != this->map_record.end(); ++it)
     {
-        fout << it->first << " " << it->second[0] << it->second[1] << "\n";
+        fout << it->first << " " << it->second << "\n";
     }
     fout.close();
 }
