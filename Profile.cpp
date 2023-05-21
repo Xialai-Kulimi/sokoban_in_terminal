@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#define DEBUG false
 
 Profile::Profile()
 {
@@ -23,7 +24,10 @@ void Profile::load()
         {
             std::string readed_string;
             getline(fin, readed_string);
-            std::cout << "read: " << readed_string << std::endl;
+            if (DEBUG)
+            {
+                std::cout << "read from .sokoban_file: " << readed_string << std::endl;
+            }
 
             if (readed_string == "")
             {
