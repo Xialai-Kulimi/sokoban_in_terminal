@@ -25,7 +25,7 @@ bool replace(std::string &str, const std::string &from, const std::string &to)
     if (start_pos == std::string::npos)
         return false;
     str.replace(start_pos, from.length(), to);
-    return true;
+    return replace(str, from, to);
 }
 
 std::vector<std::string> list_txt(std::string folder_name)
