@@ -90,7 +90,14 @@ int Profile::read_setting(std::string key)
 
 std::vector<int> Profile::read_play_record(std::string map_name)
 {
-    return this->map_record[map_name];
+    std::vector<int> play_record = this->map_record[map_name];
+    if (play_record.size() == 0)
+    {
+        play_record.push_back(0);
+        play_record.push_back(-1);
+    }
+    
+    return play_record;
 }
 
 void Profile::write_setting(std::string setting_key, int setting_value)
@@ -108,7 +115,7 @@ void Profile::update_record(std::string map_name, int step)
         play_record.push_back(step);
     }
     play_record[0] = play_record[0] + 1;
-    if (step < play_record[1])
+    if (step < play_record[1] && step > 0)
     {
         play_record[1] = step;
     }

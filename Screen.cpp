@@ -816,7 +816,7 @@ int Screen::play_map(std::string map_name)
         if (recv_key == "esc")
         {
             this->send_popup("You quit the game.");
-            return 0;
+            return -1;
         }
         else if (recv_key == "r")
         {
@@ -832,7 +832,7 @@ int Screen::play_map(std::string map_name)
         if (this->map.check_win())
         {
             this->send_popup("You win!");
-            return 1;
+            return this->move_count;
         }
     }
 }

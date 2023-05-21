@@ -82,7 +82,7 @@ public:
 
     // display map
     void init_map(Map);
-    int play_map(std::string); // return score
+    int play_map(std::string); // return step
 
 
     void send_popup(std::string, bool wait=true);
