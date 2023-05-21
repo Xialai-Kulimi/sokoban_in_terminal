@@ -170,21 +170,24 @@ void setting_theme()
                 if (control_vector[1] == 0)
                 {
                     screen.toggle_show_border();
+                    profile.write_setting("show_border", (int)screen.show_border);
                 }
                 break;
             case 1:
                 if (control_vector[1] == 0)
                 {
                     screen.toggle_align();
+                    profile.write_setting("align_center", (int)(screen.align == "center"));
                 }
                 break;
             case 2:
                 screen.frame_rate = ((screen.frame_rate / 10) + control_vector[1]) * 10;
                 screen.frame_rate = (screen.frame_rate + 50) % 60 + 10;
-
+                profile.write_setting("frame_rate", screen.frame_rate);
                 break;
             case 3:
                 screen.default_max_width = std::max(75, screen.default_max_width + control_vector[1] * 6);
+                profile.write_setting("default_max_width", screen.default_max_width);
                 screen.set_size();
                 break;
             case 4:

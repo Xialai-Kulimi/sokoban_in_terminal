@@ -96,6 +96,7 @@ std::vector<int> Profile::read_play_record(std::string map_name)
 void Profile::write_setting(std::string setting_key, int setting_value)
 {
     this->setting_map[setting_key] = setting_value;
+    this->save();
 }
 
 void Profile::update_record(std::string map_name, int step)
