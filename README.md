@@ -1,6 +1,15 @@
 # sokoban_in_terminal
 Sokoban in terminal, NTPU Object Oriented Programming coursework
 
+# 編譯
+```
+g++ Block.cpp Map.cpp Screen.cpp Config.cpp Profile.cpp main.cpp
+```
+或是
+```
+make
+```
+
 # 教學
 
 ## 添加自定義地圖
